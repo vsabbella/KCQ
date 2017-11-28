@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>CQMaterialTransactionBatchHandler</members>
+        <members>CQMaterialTransactionMonitorBatch</members>
+        <members>InventoryTransactionTgrHandler</members>
+        <members>KCQUtils</members>
+        <name>ApexClass</name>
+    </types>
+    <!--<types>
+        <members>*</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>StaticResource</name>
+    </types>
+  -->
+    <types>
+        <members>InvTransToMaterialTransTgr</members>
+        <name>ApexTrigger</name>
+    </types>
+    <types>
+      <members>KNDY4__Item__c</members>
+      <members>KNDY4__Item_Specification__c</members>
+      <name>CustomObject</name>
+    </types>
+    <types>
+      <members>KNDY4__Item__c.Inspection_Required__c</members>
+      <members>KNDY4__Item__c.CQ_Part__c</members>
+
+      <name>CustomField</name>
+    </types>
+    <types>
+        <members>KCQ_Permissions</members>
+        <name>PermissionSet</name>
+    </types>
+    <version>40.0</version>
+</Package>

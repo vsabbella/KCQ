@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Item Master object</description>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Inspection_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checked if CQ Inspection is required for the item.</description>
+        <externalId>false</externalId>
+        <label>Inspection Required</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CQ_Part__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Compliance Quest's replica of Kenandy's Item or viceversa</description>
+        <externalId>false</externalId>
+        <label>CQ Part</label>
+        <referenceTo>compliancequest__SQX_Part__c</referenceTo>
+        <relationshipName>KNDYItems</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Item</label>
+    <pluralLabel>Items</pluralLabel>
+    <nameField>
+        <label>Item</label>
+        <type>Text</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>
+
+

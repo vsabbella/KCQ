@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+  <fieldPermissions>
+      <editable>true</editable>
+      <field>KNDY4__Item__c.Inspection_Required__c</field>
+      <readable>true</readable>
+  </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>KNDY4__Item__c.CQ_Part__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <classAccesses>
+        <apexClass>KCQUtils</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InventoryTransactionTgrHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CQMaterialTransactionMonitorBatch</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CQMaterialTransactionBatchHandler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+  <!--<fieldPermissions>
+      <editable>true</editable>
+      <field>Item_Cross_Reference__c.Inspection_Required__c</field>
+      <readable>true</readable>
+  </fieldPermissions> -->
+    <label>Kenandy Compliance Quest Permissions</label>
+    <description>Enable all objects for Kenandy Salesforce User License</description>
+</PermissionSet>
