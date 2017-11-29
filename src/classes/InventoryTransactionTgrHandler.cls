@@ -90,10 +90,6 @@ public with sharing class InventoryTransactionTgrHandler {
         List<Sobject> CQMaterialTransactionSObjList = new List<Sobject>();
         List<String> LotNumbers = new List<String>();
 
-        //TODO get these prefixes from describe result
-        //String WorkOrderPrefix = 'a5R';
-        //String purchaseOrderPrefix = 'a4T';
-
         String ReceiptLineObj =  'KNDY4__Receipt_Line__c';
         String WorkOrderObj  = 'KNDY4__Work_Order__c';
         String[] inspectionObjects = new String[]{ReceiptLineObj,WorkOrderObj};
