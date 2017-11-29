@@ -49,13 +49,16 @@ public with sharing class InventoryTransactionTgrHandler {
         };
 
         String AggregateQuery = ' select count(KNDY4__Quantity__c) qty,KNDY4__Lot__r.name LotNumber,KNDY4__Work_Order__c woId,KNDY4__Work_Order__r.name woNumber, '+
-                ' KNDY4__Type__c ITType,KNDY4__Receipt_Line__r.name rcptNum,KNDY4__Receipt_Line__c rcptLineId,KNDY4__Item__r.CQ_Part__c CQPart,KNDY4__Item__r.Inspection_Required__c inspectionReq '+
+                ' KNDY4__Type__c ITType,KNDY4__Receipt_Line__r.name rcptNum,KNDY4__Receipt_Line__c rcptLineId,KNDY4__Receipt_Line__r.KNDY4__Purchase_Order_Line__r.name poline, KNDY4__Item__r.kcq1__CQ_Part__c CQPart,' +
+                ' KNDY4__Item__r.kcq1__Inspection_Required__c inspectionReq, KNDY4__Item__r.KNDY4__Supplier__r.KNDY4__Address__c supplier ' +
                 ' from KNDY4__Inventory_Transaction__c where KNDY4__Work_Order__c IN :workOrderIds or KNDY4__Receipt_Line__c IN:ReceiptLineIds '+
                 ' group by KNDY4__Work_Order__c,KNDY4__Type__c,KNDY4__Receipt_Line__r.name ,KNDY4__Receipt_Line__c, '+
-                ' KNDY4__Item__r.CQ_Part__c,KNDY4__Work_Order__r.name,KNDY4__Lot__r.name,KNDY4__Item__r.Inspection_Required__c ';
+                ' KNDY4__Item__r.kcq1__CQ_Part__c,KNDY4__Work_Order__r.name,KNDY4__Lot__r.name,KNDY4__Item__r.kcq1__Inspection_Required__c,'+
+                ' KNDY4__Item__r.KNDY4__Supplier__r.KNDY4__Address__c, KNDY4__Receipt_Line__r.KNDY4__Purchase_Order_Line__r.name ';
 
 
-        List<AggregateResult> InvTransAggResult = (List<AggregateResult>) database.query(AggregateQuery);
+
+                List<AggregateResult> InvTransAggResult = (List<AggregateResult>) database.query(AggregateQuery);
         System.debug(LoggingLevel.ERROR, '2: Query'+JSON.serialize(InvTransAggResult));
 
         for(AggregateResult ar : InvTransAggResult){
@@ -115,6 +118,9 @@ public with sharing class InventoryTransactionTgrHandler {
                 ar = AggResList[0];
             }
 
+            System.debug(LoggingLevel.ERROR,'3.1 Ar'+JSON.serialize(ar));
+
+
             if (ar.get('inspectionReq') != null && boolean.valueOf(ar.get('inspectionReq')))
             {
                 String POWONumber = (ar.get('woNumber') != null) ? (String) ar.get('woNumber') : (String)ar.get('rcptNum');
@@ -126,8 +132,20 @@ public with sharing class InventoryTransactionTgrHandler {
                 String LotNumber = ar.get('LotNumber') != null ? (String) ar.get('LotNumber') : 'No Lot Number';
                 CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c, LotNumber);
                 LotNumbers.add(LotNumber);
+                CQMaterialTransactionSObjList.add(CQMaterialTransactionSObj);
+                Id SupplierAccountReference = (Id) ar.get('supplier');
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Supplier__c,SupplierAccountReference);
+                String polineNumber = (String) ar.get('poline');
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Line_Number__c,polineNumber);
+                String ExtReference  = polineNumber;
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__External_Reference__c,polineNumber);
+
+                //Todo receipt Number is lookup in CQ. Confirmation required.
+                //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Receipt_Number__c,'Sample Rcpt Number');
+
+
+
             }
-            CQMaterialTransactionSObjList.add(CQMaterialTransactionSObj);
             System.debug(LoggingLevel.ERROR,'4.CQMaterialTransactionSObjList'+JSON.serialize(CQMaterialTransactionSObjList));
 
         }
@@ -161,11 +179,7 @@ public with sharing class InventoryTransactionTgrHandler {
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Number__c, 'Part Number');//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, CQMT_TRANSCODE_INCOMERECEIPT);
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Status__c, CQMT_STATUS_PENDING);
-        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Line_Number__c,RW.pol.get(Schema.Purchase_Order_Line__c.Name));
-        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Receipt_Number__c,'Sample Rcpt Number');
-        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Supplier__c,ITComp.KNDY4__Item__r.Supplier__r.Address__c);
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Inspection_Required__c, true);
-        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__External_Reference__c,RW.rl.Name);
         System.debug(LoggingLevel.ERROR,'5. CQMaterialTransactionSObj'+JSON.serialize(CQMaterialTransactionSObj));
         return CQMaterialTransactionSObj;
     }
