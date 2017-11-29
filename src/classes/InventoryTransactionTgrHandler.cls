@@ -8,14 +8,13 @@ public with sharing class InventoryTransactionTgrHandler {
     public static boolean executed=false;
 
     public static void mapInventoryTransacations(List<KNDY4__Inventory_Transaction__c> newList, List<KNDY4__Inventory_Transaction__c> oldList){
-        set<String> WOITTypes = new Set<String>{
+        set<String> ITTypes = new Set<String>{
                 'Work Order Assembly Completion',
                 'Work Order Issue From WIP',
                 'Work Order Component Issue',
-                'Purchase Order Receipt'
-        };
+                'Purchase Order Receipt' };
         List<KNDY4__Inventory_Transaction__c> InspectionITs = new List<KNDY4__Inventory_Transaction__c>();
-        Map<Id, Map<String,KNDY4__Inventory_Transaction__c>> ItsByWOId = new Map<Id, Map<String,KNDY4__Inventory_Transaction__c>>();
+        Map<Id, List<AggregateResult>> AggResultListById = new Map<Id, List<AggregateResult>>();
         Map<Id,KNDY4__Inventory_Transaction__c> newMap = new  Map<Id,KNDY4__Inventory_Transaction__c>(newList);
         for(Id InvTransId: newMap.keyset()){
             KCQUtils KCQUtilObj = new KCQUtils();
@@ -28,55 +27,59 @@ public with sharing class InventoryTransactionTgrHandler {
         }
 
         if(InspectionITs.size()>0) {
-            queryInvTransaction(InspectionITs, ItsByWOId);
-            mapMaterialTransaction(ItsByWOId);
+            queryInvTransaction(InspectionITs, AggResultListById);
+            mapMaterialTransaction(AggResultListById);
         }
     }
 
-    public static void queryInvTransaction(List<KNDY4__Inventory_Transaction__c> newList, Map<Id, Map<String,KNDY4__Inventory_Transaction__c>> ItsByWOId){
-        system.debug(LoggingLevel.ERROR, 'Before:'+ JSON.serialize(newList));
+    public static void queryInvTransaction(List<KNDY4__Inventory_Transaction__c> InspectionITs, Map<Id, List<AggregateResult>> AggResultListById){
+        system.debug(LoggingLevel.ERROR, '1.Before:'+ JSON.serialize(InspectionITs));
         set<Id> workOrderIds = new set<Id>();
-        for(KNDY4__Inventory_Transaction__c ITRecord: newList){
+        set<Id> ReceiptLineIds = new set<Id>();
+        for(KNDY4__Inventory_Transaction__c ITRecord: InspectionITs){
             if(ITRecord.KNDY4__Work_Order__c!=null){
                 workOrderIds.add(ITRecord.KNDY4__Work_Order__c);
+            }
+            else if(ITRecord.KNDY4__Receipt_Line__c!=null){
+                ReceiptLineIds.add(ITRecord.KNDY4__Receipt_Line__c);
             }
         }
         List<string> ITTypes = new List<string>{ 'Work Order Issue From WIP',
                                                  'Work Order Assembly Completion'
         };
 
-        String ITQuery = 'select id,name,KNDY4__Lot__r.name, KNDY4__Work_Order__r.name, KNDY4__Operation_Tracking__c, KNDY4__Material_Tracking__c,KNDY4__Type__c,'+
-        ' KNDY4__Line_Type__c, KNDY4__Item__r.name, KNDY4__Receipt_Line__c, KNDY4__Quantity__c,KNDY4__Item__r.Inspection_Required__c,'+
-        ' KNDY4__Material_Tracking__r.KNDY4__Supplier__c,KNDY4__Material_Tracking__r.KNDY4__Item__r.name, KNDY4__Item__r.CQ_Part__c,KNDY4__Item__r.KNDY4__Supplier__r.KNDY4__Address__c,'+
-        ' KNDY4__Material_Tracking__r.KNDY4__Quantity_Completed__c, KNDY4__Material_Tracking__r.KNDY4__Quantity_Required__c,CreatedDate '+
-        ' from KNDY4__Inventory_Transaction__c where KNDY4__Work_Order__c IN : workOrderIds and  KNDY4__Type__c In :ITTypes order by createdDate desc';
-
-        newList = database.query(ITQuery);
-        //system.debug(LoggingLevel, 'newList:'+JSON.serialize(newList));
-        for(KNDY4__Inventory_Transaction__c IT : newList){
+        String AggregateQuery = ' select count(KNDY4__Quantity__c) qty,KNDY4__Lot__r.name LotNumber,KNDY4__Work_Order__c woId,KNDY4__Work_Order__r.name woNumber, '+
+                ' KNDY4__Type__c ITType,KNDY4__Receipt_Line__r.name rcptNum,KNDY4__Receipt_Line__c rcptLineId,KNDY4__Item__r.CQ_Part__c CQPart,KNDY4__Item__r.Inspection_Required__c inspectionReq '+
+                ' from KNDY4__Inventory_Transaction__c where KNDY4__Work_Order__c IN :workOrderIds or KNDY4__Receipt_Line__c IN:ReceiptLineIds '+
+                ' group by KNDY4__Work_Order__c,KNDY4__Type__c,KNDY4__Receipt_Line__r.name ,KNDY4__Receipt_Line__c, '+
+                ' KNDY4__Item__r.CQ_Part__c,KNDY4__Work_Order__r.name,KNDY4__Lot__r.name,KNDY4__Item__r.Inspection_Required__c ';
 
 
-            if(ItsByWOId.containsKey(IT.KNDY4__Work_Order__c)){
-                Map<String,KNDY4__Inventory_Transaction__c> ITMap = ItsByWOId.get(IT.KNDY4__Work_Order__c);
-                ITMap.put(IT.KNDY4__Type__c, IT);
-                ItsByWOId.put(IT.KNDY4__Work_Order__c,ITMap);
-              }
-            else{
-                Map<String,KNDY4__Inventory_Transaction__c> ITMap = new  Map<String,KNDY4__Inventory_Transaction__c>{IT.KNDY4__Type__c => IT};
-                ItsByWOId.put(IT.KNDY4__Work_Order__c,ITMap);
+        List<AggregateResult> InvTransAggResult = (List<AggregateResult>) database.query(AggregateQuery);
+        System.debug(LoggingLevel.ERROR, '2: Query'+JSON.serialize(InvTransAggResult));
 
+        for(AggregateResult ar : InvTransAggResult){
+            Id woPoId = ar.get('woId')!=null?(Id)ar.get('woId'):(Id)ar.get('rcptLineId');
+            if(String.isEmpty(woPoId)){
+                continue;
             }
-        //set<KNDY4__Inventory_Transaction__c> ITlist = ItsByWOId.get(IT.KNDY4__Work_Order__c)!=null?ItsByWOId.get(IT.KNDY4__Work_Order__c):new KNDY4__Inventory_Transaction__c[2];
+            if( !AggResultListById.containsKey(woPoId)) {
+                //List<AggregateResult> aggResult =  ;
+                AggResultListById.put(woPoId,new List<AggregateResult>{ar});
+            }
+            else{
+                List<AggregateResult> exAggResult = AggResultListById.get(woPoId);
+                exAggResult.add(ar);
+                AggResultListById.put(woPoId,exAggResult);
+            }
+
 
         }
+        System.debug(LoggingLevel.ERROR,'3 :AggResultListById:'+JSON.serialize(AggResultListById));
 
-        //system.debug(false, 'ITMap:'+JSON.serialize(ItsByWOId));
-        //system.assert(newList.size()>0,'No records retrieved' );
-        system.debug(LoggingLevel.ERROR,'new List:'+newList.size());
-        system.debug(LoggingLevel.ERROR, 'After:'+JSON.serialize(newList));
     }
-    private static void mapMaterialTransaction(Map<Id, Map<String,KNDY4__Inventory_Transaction__c>> ItsByWOId){
-        //system.assert(false, 'test');
+    private static void mapMaterialTransaction(Map<Id,  List<AggregateResult>> AggResultListById)
+    {
         final String CQMT_TRANSCODE_INCOMERECEIPT = 'INCOMING_RECEIPT';
         final String CQMT_STATUS_PENDING = 'Pending';
 
@@ -84,50 +87,51 @@ public with sharing class InventoryTransactionTgrHandler {
         List<Sobject> CQMaterialTransactionSObjList = new List<Sobject>();
         List<String> LotNumbers = new List<String>();
 
+        //TODO get these prefixes from describe result
+        //String WorkOrderPrefix = 'a5R';
+        //String purchaseOrderPrefix = 'a4T';
 
-        for(Id WOId:ItsByWOId.keyset() ) {
-            Map<String, KNDY4__Inventory_Transaction__c> ITMap = ItsByWOId.get(WOId);
-            //
-            //system.assert(false, JSON.serialize(RW));
-            //system.debug(LoggingLevel.ERROR,'ITLIst Size: '+ITList.size());
-//            if(ITList.size()!=2){
-//                continue;
-//            }
-            //system.debug(LoggingLevel.ERROR, 'Before Insepction Required:' + ITList[0].KNDY4__Item__r.Inspection_Required__c);
-            KNDY4__Inventory_Transaction__c ITComp = ITMap.get('Work Order Assembly Completion');
-                    system.assert(ITComp!=null, 'ITComp is null');
-            KNDY4__Inventory_Transaction__c ITWIP = ITMap.get('Work Order Issue From WIP');
-            system.assert(ITWIP!=null, 'ITWIP is null');
-            if (ITComp.KNDY4__Item__r.Inspection_Required__c) {//RW.item!=null && RW.item.Inspection_Required__c
-                system.debug(LoggingLevel.ERROR, 'Before Insepction Required');
+        String ReceiptLineObj =  'KNDY4__Receipt_Line__c';
+        String WorkOrderObj  = 'KNDY4__Work_Order__c';
+        String[] inspectionObjects = new String[]{ReceiptLineObj,WorkOrderObj};
+        Map<String,String> ObjectByKeyPrefix = getObjectByKeyPrefix(inspectionObjects);
 
-                //ItemsForInspection.add(RW.item.Id);
-                //system.assert(false, 'assertion herer.');
-                Sobject CQMaterialTransactionSObj = KCQUtilObj.getCQMaterialTransactionInstance();
-                // each purchae orderline can have mulitple skids. What skid should be considered.
-                //String LotNumber =[Select id,name from Lot__c where Id= : RW.skidList[0].Lot__c].Name;// 'LOT-11';//
-                //system.assert(false, RW.serialWrapperList[0].skid.Lot_Number__c);
-                String LotNumber = ITWIP.KNDY4__Lot__r.name;
-                LotNumbers.add(LotNumber);
+        for(Id woPoId:AggResultListById.keyset() )
+        {
+            List<AggregateResult> AggResList = AggResultListById.get(woPoId);
+            Sobject CQMaterialTransactionSObj = getCQMaterialTransactionSobject();
 
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c, LotNumber);
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITWIP.KNDY4__Item__r.CQ_Part__c);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Rev__c, 'a1P1I000000desi');
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITComp.KNDY4__Item__r.CQ_Part__c);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Number__c, 'Part Number');//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, CQMT_TRANSCODE_INCOMERECEIPT);
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Status__c, CQMT_STATUS_PENDING);
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c, ITWIP.KNDY4__Work_Order__r.name);
-                //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Line_Number__c,RW.pol.get(Schema.Purchase_Order_Line__c.Name));
-                //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Receipt_Number__c,'Sample Rcpt Number');
-                //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Supplier__c,ITComp.KNDY4__Item__r.Supplier__r.Address__c);
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Quantity__c,ITWIP.KNDY4__Quantity__c);
-                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Inspection_Required__c, true);
-                //system.assert(false, '');
-                //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__External_Reference__c,RW.rl.Name);
-                CQMaterialTransactionSObjList.add(CQMaterialTransactionSObj);
-
+            String WorkOrderPrefix = ObjectByKeyPrefix.get(WorkOrderObj);
+            String purchaseOrderPrefix = ObjectByKeyPrefix.get(ReceiptLineObj);
+            AggregateResult ar;
+            String woPoIdStr = (String)woPoId;
+            if (woPoIdStr.startsWith(WorkOrderPrefix))
+            {
+                Map<String, AggregateResult> AggResultByWoType = getAggResultByWOType(AggResList);
+                ar = AggResultByWoType.get('Work Order Assembly Completion');
             }
+            else if(woPoIdStr.startsWith(purchaseOrderPrefix))
+            {
+                ar = AggResList[0];
+            }
+
+            if (ar.get('inspectionReq') != null && boolean.valueOf(ar.get('inspectionReq')))
+            {
+                String POWONumber = (ar.get('woNumber') != null) ? (String) ar.get('woNumber') : (String)ar.get('rcptNum');
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c, POWONumber);
+                Id partReference = ar.get('CQPart') != null ? (Id) ar.get('CQPart') : null;
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, partReference);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+                Integer quantity = ar.get('qty')!=null?(Integer) ar.get('qty'):-1;
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Quantity__c, quantity);
+                String LotNumber = ar.get('LotNumber') != null ? (String) ar.get('LotNumber') : 'No Lot Number';
+                CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c, LotNumber);
+                LotNumbers.add(LotNumber);
+            }
+            CQMaterialTransactionSObjList.add(CQMaterialTransactionSObj);
+            System.debug(LoggingLevel.ERROR,'4.CQMaterialTransactionSObjList'+JSON.serialize(CQMaterialTransactionSObjList));
+
+        }
+
 
             Insert (List<compliancequest__SQX_Material_Transaction__c>)CQMaterialTransactionSObjList;
 
@@ -138,7 +142,52 @@ public with sharing class InventoryTransactionTgrHandler {
                 update lotList;
             }
 
-        }
+
 
     }
+    public static SObject getCQMaterialTransactionSobject(){
+        final String CQMT_TRANSCODE_INCOMERECEIPT = 'INCOMING_RECEIPT';
+        final String CQMT_STATUS_PENDING = 'Pending';
+        KCQUtils KCQUtilObj = new KCQUtils();
+        Sobject CQMaterialTransactionSObj = KCQUtilObj.getCQMaterialTransactionInstance();
+        // each purchae orderline can have mulitple skids. What skid should be considered.
+        //String LotNumber =[Select id,name from Lot__c where Id= : RW.skidList[0].Lot__c].Name;// 'LOT-11';//
+        //system.assert(false, RW.serialWrapperList[0].skid.Lot_Number__c);
+
+
+
+        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITWIP.KNDY4__Item__r.CQ_Part__c);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Rev__c, 'a1P1I000000desi');
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Number__c, 'Part Number');//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, CQMT_TRANSCODE_INCOMERECEIPT);
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Status__c, CQMT_STATUS_PENDING);
+        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Line_Number__c,RW.pol.get(Schema.Purchase_Order_Line__c.Name));
+        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Receipt_Number__c,'Sample Rcpt Number');
+        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Supplier__c,ITComp.KNDY4__Item__r.Supplier__r.Address__c);
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Inspection_Required__c, true);
+        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__External_Reference__c,RW.rl.Name);
+        System.debug(LoggingLevel.ERROR,'5. CQMaterialTransactionSObj'+JSON.serialize(CQMaterialTransactionSObj));
+        return CQMaterialTransactionSObj;
+    }
+    public static  Map<String,AggregateResult> getAggResultByWOType(List<AggregateResult> AggregateResult){
+        Map<String,AggregateResult> AggResultByWOType = new Map<String,AggregateResult>();
+        for(AggregateResult ar:AggregateResult){
+            AggResultByWOType.put((String)ar.get('ITType'),ar);
+
+
+        }
+        System.debug(LoggingLevel.ERROR,'6 . AggResultByWOType'+JSON.serialize(AggResultByWOType));
+
+        return AggResultByWOType;
+
+    }
+    public static Map<String,String> getObjectbyKeyPrefix(String[] inspectionObjects){
+        String[] types = inspectionObjects;
+        Schema.DescribeSobjectResult[] results = Schema.describeSObjects(types);
+        Map<String,String> ObjectByKeyPrefix = new Map<String,String>{results[0].getName()=>results[0].getKeyPrefix(),results[1].getName()=>results[1].getKeyPrefix()};
+        System.debug(LoggingLevel.ERROR,'7. ObjectByKeyPrefix'+JSON.serialize(ObjectByKeyPrefix));
+        return ObjectByKeyPrefix;
+
+    }
+
 }
