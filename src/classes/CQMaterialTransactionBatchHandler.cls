@@ -15,11 +15,16 @@ public with sharing class CQMaterialTransactionBatchHandler {
                 Sobj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Status__c, CQMATERIALTRANSACTION_STATUS_COMPLETED);
                 //TOD0: Bulkify this.
                 String LotNumber = (String)SObj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c);
-                KNDY4__Lot__c Lot = [select id,name,KNDY4__Lot_Hold__c from KNDY4__Lot__c where Name = :LotNumber order by createdDate desc limit 1];
-                Lot.put(Schema.KNDY4__Lot__c.KNDY4__Lot_Hold__c, False);
+                List<KNDY4__Lot__c> LotList = [select id,name,KNDY4__Lot_Hold__c from KNDY4__Lot__c where Name = :LotNumber order by createdDate desc limit 1];
+
+                if(LotList.size()>0){
+                    LotList[0].put(Schema.KNDY4__Lot__c.KNDY4__Lot_Hold__c, False);
+                    update LotList[0];
+                }
+
                 //system.assert(false,'MT'+ JSON.serialize(SObj) + 'LOT:' +JSON.serialize(Lot));
                 update (compliancequest__SQX_Material_Transaction__c)Sobj;
-                update Lot;
+
             }
             else If(CQMATERIALTRANSACTION_TRANSCODE_INSPECTION_FAIL.equals((String)SObj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c))){
 

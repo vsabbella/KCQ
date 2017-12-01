@@ -208,30 +208,78 @@ public with sharing class KCQTest {
     }
 
     private static testMethod void testMaterialTransactionBatch(){
+        createCQData();
+        List<compliancequest__SQX_Material_Transaction__c> mtList = [select Id,compliancequest__Transaction_Code__c, compliancequest__Status__c, compliancequest__PO_WO_Number__c, compliancequest__SQX_Part_Number__c, compliancequest__Lot_Number__c, compliancequest__Quantity__c, compliancequest__Inspection_Required__c
+        from compliancequest__SQX_Material_Transaction__c
+        where compliancequest__Status__c ='Pending'
+        ];
+
+        system.debug(LoggingLevel.ERROR, '-->'+JSON.serialize(mtlist));
+
+        system.assert(mtList.size()>0);
 
         Test.startTest();
-
+        Database.executeBatch(new CQMaterialTransactionMonitorBatch(), 10);
         Test.stopTest();
+
+        List<compliancequest__SQX_Material_Transaction__c> mtList_complete = [ select Id,compliancequest__Transaction_Code__c, compliancequest__Status__c, compliancequest__PO_WO_Number__c, compliancequest__SQX_Part_Number__c, compliancequest__Lot_Number__c, compliancequest__Quantity__c, compliancequest__Inspection_Required__c
+        from compliancequest__SQX_Material_Transaction__c where compliancequest__Status__c ='Complete'];
+
+        //system.assert(mtList_complete.size()>0);
+
     }
 
-    private static String getSQXJSON(){
-      String str=  '['+
-              '{'+
-              '  "attributes": {'+
-              '    "type": "compliancequest__SQX_Material_Transaction__c",'+
-              '  },'+
-              //'  "Id": "a1I1I0000012HaCUAU",'+
-              '  "compliancequest__Transaction_Code__c": "INCOMING_RECEIPT",'+
-              '  "compliancequest__Status__c": "Pending",'+
-              '  "compliancequest__PO_WO_Number__c": "WO-0000000002",'+
-              '  "compliancequest__SQX_Part_Number__c": "a1P1I000000k29wUAA",'+
-              '  "compliancequest__Lot_Number__c": "LOT-BARS-1",'+
-              '  "compliancequest__Quantity__c": 1,'+
-              '  "compliancequest__Inspection_Required__c": true'+
-              '  }'+
-              ']';
+    private static void createCQData(){
+        compliancequest__SQX_Part_Family__c pfam = new compliancequest__SQX_Part_Family__c(name = 'familiyt-wo');
+        insert pfam;
 
-        return str;
+        compliancequest__SQX_Part__c part = new compliancequest__SQX_Part__c(compliancequest__Active__c= true,
+                compliancequest__Part_Description__c= 'desc',
+                compliancequest__Part_Family__c= pfam.id,
+                compliancequest__Part_Number__c= 'WOpart1',
+                compliancequest__Part_Risk_Level__c=1,
+                compliancequest__Part_Type__c= 'Assembly'
+        );
+        insert part;
+
+        Sobject CQMaterialTransactionSObj = InventoryTransactionTgrHandler.getCQMaterialTransactionSobject();
+        String POWONumber = 'POWONumber';
+
+
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c, POWONumber);
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, part.Id);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, part.Id);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, 'INSPECTION_PASS');
+
+        Integer quantity = 10;
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Quantity__c, quantity);
+
+        String LotNumber =  'No Lot Number';
+
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c, LotNumber);
+
+
+        //Id SupplierAccountReference = (Id) ar.get('supplier');
+        // CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Supplier__c,SupplierAccountReference);
+        String polineNumber ='poline';
+
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Line_Number__c,polineNumber);
+        String ExtReference  = polineNumber;
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__External_Reference__c,polineNumber);
+
+        insert CQMaterialTransactionSObj;
+
+        insert CQMaterialTransactionSObj.clone(false,true,false,false);
+        insert CQMaterialTransactionSObj.clone(false,true,false,false);
+
+        insert CQMaterialTransactionSObj.clone(false,true,false,false);
+
+        insert CQMaterialTransactionSObj.clone(false,true,false,false);
+
+        compliancequest__SQX_Material_Transaction__c mt = [select id,name from compliancequest__SQX_Material_Transaction__c limit 1 ];
+
+        system.assert(mt.Id!=null);
 
     }
 
