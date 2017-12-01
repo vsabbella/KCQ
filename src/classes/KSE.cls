@@ -1,6 +1,7 @@
 /**
  * @description code best practices that are also useful
  */
+@isTest
 global with sharing class KSE {
     class CustomException Extends Exception{}
 

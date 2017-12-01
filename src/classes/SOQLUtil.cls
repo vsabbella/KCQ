@@ -1,3 +1,4 @@
+@isTest
 public with sharing class SOQLUtil {
 
     public class SOQLUtilException extends Exception{}

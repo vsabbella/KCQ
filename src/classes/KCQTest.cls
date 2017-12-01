@@ -220,6 +220,9 @@ public with sharing class KCQTest {
 
         Test.startTest();
         Database.executeBatch(new CQMaterialTransactionMonitorBatch(), 10);
+        CQMaterialTransactionMonitorBatch batch = new CQMaterialTransactionMonitorBatch();
+        KNDY4__Process_Job__c job;
+        batch.runBatch(job);
         Test.stopTest();
 
         List<compliancequest__SQX_Material_Transaction__c> mtList_complete = [ select Id,compliancequest__Transaction_Code__c, compliancequest__Status__c, compliancequest__PO_WO_Number__c, compliancequest__SQX_Part_Number__c, compliancequest__Lot_Number__c, compliancequest__Quantity__c, compliancequest__Inspection_Required__c
@@ -230,6 +233,8 @@ public with sharing class KCQTest {
     }
 
     private static void createCQData(){
+        TestFuel f = new TestFuel();
+
         compliancequest__SQX_Part_Family__c pfam = new compliancequest__SQX_Part_Family__c(name = 'familiyt-wo');
         insert pfam;
 
@@ -257,6 +262,14 @@ public with sharing class KCQTest {
 
         String LotNumber =  'No Lot Number';
 
+        KNDY4__Lot__c lot =new KNDY4__Lot__c(Name = LotNumber,
+                KNDY4__Company__c = f.company.Id,
+        KNDY4__Item__c = f.itemList[2].id,
+                KNDY4__Lot_Hold__c = false
+        );
+
+        insert lot;
+
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c, LotNumber);
 
 
@@ -274,8 +287,10 @@ public with sharing class KCQTest {
         insert CQMaterialTransactionSObj.clone(false,true,false,false);
 
         insert CQMaterialTransactionSObj.clone(false,true,false,false);
+        Sobject s =CQMaterialTransactionSObj.clone(false,true,false,false);
+        s.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, 'INSPECTION_FAIL');
 
-        insert CQMaterialTransactionSObj.clone(false,true,false,false);
+        insert s;
 
         compliancequest__SQX_Material_Transaction__c mt = [select id,name from compliancequest__SQX_Material_Transaction__c limit 1 ];
 

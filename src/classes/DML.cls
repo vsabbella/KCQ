@@ -1,3 +1,4 @@
+@isTest
 public with sharing class DML {
 
     private static boolean check_access = ( Test.isRunningTest() == false ); // dont throw IA exception in tests

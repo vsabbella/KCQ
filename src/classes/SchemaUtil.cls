@@ -1,7 +1,7 @@
 /**
  * @description utilities to build queries and field lists
  */
-
+@isTest
 global with sharing class SchemaUtil {
 
     private Map<String, Schema.SObjectType> globalDescribe;

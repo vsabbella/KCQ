@@ -1,6 +1,7 @@
 /**
  * Created by venkatasabbella on 11/29/17.
  */
+@isTest
 
 public with sharing class CSVParser {
 
