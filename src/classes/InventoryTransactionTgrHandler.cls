@@ -83,6 +83,7 @@ public with sharing class InventoryTransactionTgrHandler {
     }
     private static void mapMaterialTransaction(Map<Id,  List<AggregateResult>> AggResultListById)
     {
+        //system.assert(false);
         final String CQMT_TRANSCODE_INCOMERECEIPT = 'INCOMING_RECEIPT';
         final String CQMT_STATUS_PENDING = 'Pending';
 

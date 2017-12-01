@@ -7,6 +7,12 @@
   </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>KNDY4__GL_Type__c.KNDY4__Normal_Balance__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <fieldPermissions>
+        <editable>true</editable>
         <field>KNDY4__Item__c.CQ_Part__c</field>
         <readable>true</readable>
     </fieldPermissions>

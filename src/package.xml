@@ -5,6 +5,13 @@
         <members>CQMaterialTransactionMonitorBatch</members>
         <members>InventoryTransactionTgrHandler</members>
         <members>KCQUtils</members>
+        <members>KCQTest</members>
+        <members>KSE</members>
+        <members>SOQLUtil</members>
+        <members>SchemaUtil</members>
+        <members>DML</members>
+        <members>CSVParser</members>
+        <members>TestFuel</members>
         <name>ApexClass</name>
     </types>
     <!--<types>
