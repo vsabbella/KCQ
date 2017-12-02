@@ -1,8 +1,3 @@
-
-/**
- * Created by venkatasabbella on 11/14/17.
- */
-
 public with sharing class InventoryTransactionTgrHandler {
 
     public static boolean executed=false;
@@ -83,7 +78,6 @@ public with sharing class InventoryTransactionTgrHandler {
     }
     private static void mapMaterialTransaction(Map<Id,  List<AggregateResult>> AggResultListById)
     {
-        //system.assert(false);
         final String CQMT_TRANSCODE_INCOMERECEIPT = 'INCOMING_RECEIPT';
         final String CQMT_STATUS_PENDING = 'Pending';
 
@@ -156,8 +150,6 @@ public with sharing class InventoryTransactionTgrHandler {
                 }
                 update lotList;
             }
-
-
 
     }
     public static SObject getCQMaterialTransactionSobject(){

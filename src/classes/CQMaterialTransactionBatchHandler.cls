@@ -1,6 +1,3 @@
-/**
- * Created by venkatasabbella on 11/2/17.
- */
 
 public with sharing class CQMaterialTransactionBatchHandler {
     final Static String CQMATERIALTRANSACTION_TRANSCODE_INSPECTION_PASS = 'INSPECTION_PASS';
@@ -22,7 +19,7 @@ public with sharing class CQMaterialTransactionBatchHandler {
                     update LotList[0];
                 }
 
-                //system.assert(false,'MT'+ JSON.serialize(SObj) + 'LOT:' +JSON.serialize(Lot));
+
                 update (compliancequest__SQX_Material_Transaction__c)Sobj;
 
             }

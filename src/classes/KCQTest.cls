@@ -1,6 +1,3 @@
-/**
- * Created by venkatasabbella on 11/29/17.
- */
 
 @isTest(seealldata=false)
 public with sharing class KCQTest {
@@ -106,13 +103,6 @@ public with sharing class KCQTest {
         List<compliancequest__SQX_Material_Transaction__c> matTrnas = [select id,name from compliancequest__SQX_Material_Transaction__c];
         system.assert(matTrnas.size()>0);
 
-
-
-
-
-
-
-
     }
 
     private static testMethod void testWorkOrders(){
@@ -131,6 +121,8 @@ public with sharing class KCQTest {
         KNDY4__Item__c Item = data.itemList[5];
         KNDY4__SKID__c Skid = data.skids[5];
 
+
+        //TODO : CQ part family creation fails with work orders.
         //compliancequest__SQX_Part_Family__c pfam1 = [ select id,name from compliancequest__SQX_Part_Family__c limit 1];
         //compliancequest__SQX_Part_Family__c pfam = new compliancequest__SQX_Part_Family__c(name = 'familiyt-wo');
         //insert pfam;
@@ -252,8 +244,7 @@ public with sharing class KCQTest {
 
 
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c, POWONumber);
-        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, part.Id);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
-        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, part.Id);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, part.Id);
 
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, 'INSPECTION_PASS');
 
