@@ -10,7 +10,6 @@ public with sharing class CQMaterialTransactionBatchHandler {
     final Static String CQMATERIALTRANSACTION_STATUS_COMPLETED ='Completed';
 
     public static void processCQMaterialTransactions(List<Sobject> SObjectList){
-        //system.assert(false, 'assertion here.'+JSON.serialize(SObjectList));
         List<Sobject> MTSobjectList= new List<Sobject>();
         set<String> PO_WO_Numbers = new set<String>();
         set<String> LotNumbers = new set<String>();
@@ -22,26 +21,6 @@ public with sharing class CQMaterialTransactionBatchHandler {
                 MTSobjectList.add(Sobj);
                 PO_WO_Numbers.add((String)Sobj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c));
                 LotNumbers.add((String)SObj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c));
-
-                //TOD0: Bulkify this.
-                /*
-                List<KNDY4__Lot__c> LotList = [select id,name,KNDY4__Lot_Hold__c from KNDY4__Lot__c
-                                               where Name = :LotNumber and KNDY4__Item__c IN (select KNDY4__Item__c from KNDY4__Work_Order__c where name In:PO_WO_Numbers or KNDY4__Item__c IN (select KNDY4__Item__c from KNDY4__Purchase_Order_Line__c where name In:PO_WO_Numbers))
-                                               order by createdDate desc limit 1
-                                              ];*/
-
-                /*
-                * ( KNDY4__Item__c IN (select KNDY4__Item__c from KNDY4__Work_Order__c where name In:PO_WO_Numbers )
-                                                                             or KNDY4__Item__c IN (select KNDY4__Item__c from KNDY4__Purchase_Order_Line__c where name In:PO_WO_Numbers)
-                                                                           )
-
-                if(LotList.size()>0){
-                    LotList[0].put(Schema.KNDY4__Lot__c.KNDY4__Lot_Hold__c, False);
-                    update LotList[0];
-                }
-                 */
-
-                //update (compliancequest__SQX_Material_Transaction__c)Sobj;
 
             }
             else If(CQMATERIALTRANSACTION_TRANSCODE_INSPECTION_FAIL.equals(SobjTransCode)){
