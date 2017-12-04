@@ -34,6 +34,7 @@
     <types>
       <members>KNDY4__Item__c</members>
       <members>KNDY4__Item_Specification__c</members>
+      <members>compliancequest__SQX_Material_Transaction__c</members>
       <name>CustomObject</name>
     </types>
     <types>

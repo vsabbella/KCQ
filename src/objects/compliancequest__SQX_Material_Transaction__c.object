@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>This object records the details of the received material transactions.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>compliancequest__Transaction_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Records the transaction code.</description>
+        <externalId>false</externalId>
+        <label>Transaction Code</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>INCOMING_RECEIPT</fullName>
+                    <default>false</default>
+                    <label>INCOMING_RECEIPT</label>
+                </value>
+                <value>
+                    <fullName>INSPECTION_CREATED</fullName>
+                    <default>false</default>
+                    <label>INSPECTION_CREATED</label>
+                </value>
+                <value>
+                    <fullName>INSPECTION_PASS</fullName>
+                    <default>false</default>
+                    <label>INSPECTION_PASS</label>
+                </value>
+                <value>
+                    <fullName>INSPECTION_FAIL</fullName>
+                    <default>false</default>
+                    <label>INSPECTION_FAIL</label>
+                </value>
+                <value>
+                    <fullName>USE_AS_IS</fullName>
+                    <default>false</default>
+                    <label>USE_AS_IS</label>
+                </value>
+                <value>
+                    <fullName>RTV</fullName>
+                    <default>false</default>
+                    <label>RTV</label>
+                </value>
+                <value>
+                    <fullName>SCRAP</fullName>
+                    <default>false</default>
+                    <label>SCRAP</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Material Transaction</label>
+    <sharingModel>ReadWrite</sharingModel>
+
+    <nameField>
+        <displayFormat>MTR-{000000}</displayFormat>
+        <label>Transaction Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Material Transactions</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
