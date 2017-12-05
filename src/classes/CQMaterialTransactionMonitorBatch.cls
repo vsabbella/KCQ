@@ -17,7 +17,6 @@ global with sharing class CQMaterialTransactionMonitorBatch implements Database.
     }
     global CQMaterialTransactionMonitorBatch(){
 
-
     }
 
 }

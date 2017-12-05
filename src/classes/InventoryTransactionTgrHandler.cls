@@ -44,10 +44,10 @@ public with sharing class InventoryTransactionTgrHandler {
         };
 
         String AggregateQuery = ' select count(KNDY4__Quantity__c) qty,KNDY4__Lot__r.name LotNumber,KNDY4__Work_Order__c woId,KNDY4__Work_Order__r.name woNumber, '+
-                ' KNDY4__Type__c ITType,KNDY4__Receipt_Line__r.name rcptNum,KNDY4__Receipt_Line__c rcptLineId,KNDY4__Receipt_Line__r.KNDY4__Purchase_Order_Line__r.name poline, KNDY4__Item__r.kcq1__CQ_Part__c CQPart,' +
+                ' KNDY4__Type__c ITType,KNDY4__Receipt_Line__r.name rcptNum,KNDY4__Receipt_Line__r.KNDY4__Purchase_Order__r.name rcptLineId,KNDY4__Receipt_Line__r.KNDY4__Purchase_Order_Line__r.name poline, KNDY4__Item__r.kcq1__CQ_Part__c CQPart, ' +
                 ' KNDY4__Item__r.kcq1__Inspection_Required__c inspectionReq, KNDY4__Item__r.KNDY4__Supplier__r.KNDY4__Address__c supplier ' +
                 ' from KNDY4__Inventory_Transaction__c where KNDY4__Work_Order__c IN :workOrderIds or KNDY4__Receipt_Line__c IN:ReceiptLineIds '+
-                ' group by KNDY4__Work_Order__c,KNDY4__Type__c,KNDY4__Receipt_Line__r.name ,KNDY4__Receipt_Line__c, '+
+                '  group by KNDY4__Work_Order__c,KNDY4__Type__c,KNDY4__Receipt_Line__r.name ,KNDY4__Receipt_Line__r.KNDY4__Purchase_Order__r.name, '+
                 ' KNDY4__Item__r.kcq1__CQ_Part__c,KNDY4__Work_Order__r.name,KNDY4__Lot__r.name,KNDY4__Item__r.kcq1__Inspection_Required__c,'+
                 ' KNDY4__Item__r.KNDY4__Supplier__r.KNDY4__Address__c, KNDY4__Receipt_Line__r.KNDY4__Purchase_Order_Line__r.name ';
 
@@ -114,7 +114,7 @@ public with sharing class InventoryTransactionTgrHandler {
 
             if (ar.get('inspectionReq') != null && boolean.valueOf(ar.get('inspectionReq')))
             {
-                String POWONumber = (ar.get('woNumber') != null) ? (String) ar.get('woNumber') : (String)ar.get('rcptNum');
+                String POWONumber = (ar.get('woNumber') != null) ? (String) ar.get('woNumber') : (String)ar.get('PONumber');
                 CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c, POWONumber);
                 Id partReference = ar.get('CQPart') != null ? (Id) ar.get('CQPart') : null;
                 CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, partReference);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
@@ -128,7 +128,7 @@ public with sharing class InventoryTransactionTgrHandler {
                 CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Supplier__c,SupplierAccountReference);
                 String polineNumber = (String) ar.get('poline');
                 CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Line_Number__c,polineNumber);
-                String ExtReference  = polineNumber;
+                String ExtReference  = (String)ar.get('rcptNum');
                 CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__External_Reference__c,polineNumber);
 
                 //Todo receipt Number is lookup in CQ. Confirmation required.
@@ -157,12 +157,6 @@ public with sharing class InventoryTransactionTgrHandler {
         final String CQMT_STATUS_PENDING = 'Pending';
         KCQUtils KCQUtilObj = new KCQUtils();
         Sobject CQMaterialTransactionSObj = KCQUtilObj.getCQMaterialTransactionInstance();
-        // each purchae orderline can have mulitple skids. What skid should be considered.
-        //String LotNumber =[Select id,name from Lot__c where Id= : RW.skidList[0].Lot__c].Name;// 'LOT-11';//
-        //system.assert(false, RW.serialWrapperList[0].skid.Lot_Number__c);
-
-
-
         //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITWIP.KNDY4__Item__r.CQ_Part__c);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Rev__c, 'a1P1I000000desi');
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Number__c, 'Part Number');//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
