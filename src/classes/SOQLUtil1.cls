@@ -1,5 +1,5 @@
 @isTest
-public with sharing class SOQLUtil {
+public with sharing class SOQLUtil1 {
 
     public class SOQLUtilException extends Exception{}
 
@@ -48,23 +48,23 @@ public with sharing class SOQLUtil {
 
     //public enum sortOrder {ASCENDING, DESCENDING}
     //default: enforce FLS, unless test
-    public SOQLUtil(string sObjectName){
+    public SOQLUtil1(string sObjectName){
         this(sObjectName, !overrideFLS);
     }
 
-    public SOQLUtil(string sObjectName, boolean enforceFLS){
+    public SOQLUtil1(string sObjectName, boolean enforceFLS){
         this(sObjectName, enforceFLS, false);
     }
 
-    public SOQLUtil(string sObjectName, boolean enforceFLS, boolean isAggregateQuery){
-        if(!SchemaUtil.getInstance().objectExists(sObjectName)){
+    public SOQLUtil1(string sObjectName, boolean enforceFLS, boolean isAggregateQuery){
+        if(!SchemaUtil1.getInstance().objectExists(sObjectName)){
             throw new SOQLUtilException(sObjectName + ' is not a valid sObject');
         }
 
         this.queryFields = new set<string>();
         this.subQueries = new set<string>();
         this.sObjectName = sObjectName;
-        this.sObjType = SchemaUtil.getInstance().getGlobalDescribe(this.sObjectName);
+        this.sObjType = SchemaUtil1.getInstance().getGlobalDescribe(this.sObjectName);
         this.searchRecycle = false;
         this.isAggregateQuery = isAggregateQuery;
 
@@ -90,7 +90,7 @@ public with sharing class SOQLUtil {
         protected boolean setNullsLast = false;
         protected string childOrderByClause;
 
-        public ChildRelationship(SOQLUtil soql, string relationshipName){
+        public ChildRelationship(SOQLUtil1 soql, string relationshipName){
 
             this.sObjType = soql.sObjType;
             this.enforceFLS = soql.enforceFLS;
@@ -102,7 +102,7 @@ public with sharing class SOQLUtil {
                     foundRelationship = true;
                     this.childSObject = cr.getChildSObject();
                     this.childSObjectName = childSObject.getDescribe().getName();
-                }else if(cr.getRelationShipName() == KSE.NamespaceUU + relationshipName){
+                }else if(cr.getRelationShipName() == KSE1.NamespaceUU + relationshipName){
                     foundRelationship = true;
                     this.childSObject = cr.getChildSObject();
                     this.childSObjectName = childSObject.getDescribe().getName();
@@ -168,10 +168,10 @@ public with sharing class SOQLUtil {
             //Adding reference Name field as kendoUI Widgets require it to be rendered correctly.
             list<string> fieldNames = new list<string>();
             list<Schema.FieldSetMember> fsmList = new list<Schema.FieldSetMember>();
-            Schema.sObjectType childSObjType = schemaUtil.getInstance().getGlobalDescribe(this.childSobjectName);
+            Schema.sObjectType childSObjType = SchemaUtil1.getInstance().getGlobalDescribe(this.childSobjectName);
 
             Map<String, Schema.FieldSet> fieldSetMap = childSObjType.getDescribe().FieldSets.getMap();
-            String fsName = KSE.namespaceUU + fieldsetName;
+            String fsName = KSE1.namespaceUU + fieldsetName;
 
             if (fieldSetMap.containsKey(fsName)) {
                 fsmList = fieldSetMap.get(fsName).getFields();
@@ -180,12 +180,12 @@ public with sharing class SOQLUtil {
                 fsmList = fieldSetMap.get(fieldsetName).getFields();
             }
             for( Schema.FieldSetMember fsm : fsmList ){
-                fieldNames.add( fsm.getFieldPath());//.replace( KSE.namespaceUU, '').toLowerCase().trim() );
+                fieldNames.add( fsm.getFieldPath());//.replace( KSE1.namespaceUU, '').toLowerCase().trim() );
 
                 if( String.valueOf( fsm.getType() ) == 'REFERENCE'){
-                    String refName = fsm.getFieldPath().replace( KSE.namespaceUU, '').toLowerCase().trim();
+                    String refName = fsm.getFieldPath().replace( KSE1.namespaceUU, '').toLowerCase().trim();
                     if(refName.endsWith('KNDY4____c')){
-                        refName = KSE.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.name');
+                        refName = KSE1.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.name');
                     }
                     fieldNames.add( refName );
                 }
@@ -197,9 +197,9 @@ public with sharing class SOQLUtil {
             if(fieldPaths == null){
                 return;
             }
-            Schema.sObjectType sObjType = schemaUtil.getInstance().getGlobalDescribe(this.childSobjectName);
+            Schema.sObjectType sObjType = SchemaUtil1.getInstance().getGlobalDescribe(this.childSobjectName);
             Map<String, Schema.sObjectField> fieldsMap = sObjType.getDescribe().fields.getMap();
-            String namespaceUU = String.isBlank(KSE.NamespaceUU) ? '' : KSE.NamespaceUU.toLowerCase();
+            String namespaceUU = String.isBlank(KSE1.NamespaceUU) ? '' : KSE1.NamespaceUU.toLowerCase();
 
             for(string s : fieldPaths){
                 if(s == null){
@@ -223,7 +223,7 @@ public with sharing class SOQLUtil {
 
                     if(queryFields.contains(fieldPath) && dfr.getType() == Schema.DisplayType.REFERENCE){
                         if(refName.endsWith('KNDY4____c')){
-                            refName = KSE.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.name');
+                            refName = KSE1.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.name');
                         }
                         queryFields.add(refName);
                     }
@@ -236,13 +236,13 @@ public with sharing class SOQLUtil {
         }
 
         //Builds order by clause given map of field names to their sorting order.
-        public void setOrderBy(map<string,SOQLUtil.sortOrder> mInputFieldNameToOrder)
+        public void setOrderBy(map<string,SOQLUtil1.sortOrder> mInputFieldNameToOrder)
         {
             for(string fieldName: mInputFieldNameToOrder.keyset())
             {
-                if(SchemaUtil.getInstance().isValidFieldPath(fieldName.trim(), this.childSObjectName) )
+                if(SchemaUtil1.getInstance().isValidFieldPath(fieldName.trim(), this.childSObjectName) )
                 {
-                    SOQLUtil.sortOrder sortOrderVal = mInputFieldNameToOrder.get(fieldName);
+                    SOQLUtil1.sortOrder sortOrderVal = mInputFieldNameToOrder.get(fieldName);
                     if(sortOrderVal == sortOrder.sortASC)
                     {
                         mFieldNameToSortOrder.put(fieldName.trim(),'ASC');
@@ -259,7 +259,7 @@ public with sharing class SOQLUtil {
                 }
                 else
                 {
-                    //If Bad field path specified then Schemautil will throw exception.
+                    //If Bad field path specified then SchemaUtil1 will throw exception.
                 }
 
             }
@@ -331,8 +331,8 @@ public with sharing class SOQLUtil {
         }
 
         private boolean isFieldAccessible(string sObjectName, string fieldPath){
-            //If a bad field path is specified, schemautil will throw an exception
-            return SchemaUtil.getInstance().isFieldAccessible(fieldPath, sObjectName) || !enforceFLS;
+            //If a bad field path is specified, SchemaUtil1 will throw an exception
+            return SchemaUtil1.getInstance().isFieldAccessible(fieldPath, sObjectName) || !enforceFLS;
         }
 
     }// ChildRelationship class ends here.
@@ -347,7 +347,7 @@ public with sharing class SOQLUtil {
     {
         for(string fieldName: mInputFieldNameToOrder.keyset())
         {
-            if(SchemaUtil.getInstance().isValidFieldPath(fieldName, this.sObjectName) )
+            if(SchemaUtil1.getInstance().isValidFieldPath(fieldName, this.sObjectName) )
             {
                 sortOrder sortOrderVal = mInputFieldNameToOrder.get(fieldName);
                 if(sortOrderVal == sortOrder.sortASC)
@@ -366,7 +366,7 @@ public with sharing class SOQLUtil {
             }
             else
             {
-                //If Bad field path specified then Schemautil will throw exception.
+                //If Bad field path specified then SchemaUtil1 will throw exception.
             }
 
         }
@@ -433,7 +433,7 @@ public with sharing class SOQLUtil {
         list<Schema.FieldSetMember> fsmList = new list<Schema.FieldSetMember>();
 
         Map<String, Schema.FieldSet> fieldSetMap = sObjType.getDescribe().FieldSets.getMap();
-        String fsName = KSE.namespaceUU + fieldsetName;
+        String fsName = KSE1.namespaceUU + fieldsetName;
 
         if (fieldSetMap.containsKey(fsName)) {
             fsmList = fieldSetMap.get(fsName).getFields();
@@ -442,15 +442,15 @@ public with sharing class SOQLUtil {
             fsmList = fieldSetMap.get(fieldsetName).getFields();
         }
         for( Schema.FieldSetMember fsm : fsmList ){
-            fieldNames.add( fsm.getFieldPath());//.replace( KSE.namespaceUU, '').toLowerCase().trim() );
+            fieldNames.add( fsm.getFieldPath());//.replace( KSE1.namespaceUU, '').toLowerCase().trim() );
        		/*if( String.valueOf( fsm.getType() ) == 'REFERENCE'){
        			String refName = fsm.getFieldPath();
 
        			if(refName.endsWith('KNDY4____c')){
-       				refName = KSE.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.Name');
+       				refName = KSE1.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.Name');
        			}
 
-       			fieldNames.add( refName.replace( KSE.namespaceUU, '').toLowerCase().trim() );
+       			fieldNames.add( refName.replace( KSE1.namespaceUU, '').toLowerCase().trim() );
 	       	} */
         }
         addFields(new set<string>(fieldNames));
@@ -461,7 +461,7 @@ public with sharing class SOQLUtil {
             return ;
         }
         Map<String, Schema.sObjectField> fieldsMap = sObjType.getDescribe().fields.getMap();
-        String namespaceUU = String.isBlank(KSE.NamespaceUU) ? '' : KSE.NamespaceUU.toLowerCase();
+        String namespaceUU = String.isBlank(KSE1.NamespaceUU) ? '' : KSE1.NamespaceUU.toLowerCase();
 
         for(string s : fieldPaths){
             if(s == null){
@@ -507,13 +507,13 @@ public with sharing class SOQLUtil {
 
         String[] fieldSegments = fieldApiName.split('\\.');
 
-        String namespaceUU = String.isBlank(KSE.NamespaceUU) ? '' : KSE.NamespaceUU.toLowerCase();
+        String namespaceUU = String.isBlank(KSE1.NamespaceUU) ? '' : KSE1.NamespaceUU.toLowerCase();
 
         Boolean isReference = false;
 
         for(String fieldSegment : fieldSegments){
             if(fieldSegment.endsWith('KNDY4____r')){
-                fieldSegment = KSE.replaceLast(fieldSegment, 'KNDY4____r', 'KNDY4____c');
+                fieldSegment = KSE1.replaceLast(fieldSegment, 'KNDY4____r', 'KNDY4____c');
             }
 
             Schema.sObjectField sObjField;
@@ -557,7 +557,7 @@ public with sharing class SOQLUtil {
                     }
 
                     if(! String.isBlank(nameFieldPath)){
-                        refName = KSE.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.'+nameFieldPath);
+                        refName = KSE1.replaceLast(refName, 'KNDY4____c', 'KNDY4____r.'+nameFieldPath);
                         queryFields.add(refName);
                     }
                 }
@@ -708,15 +708,15 @@ public with sharing class SOQLUtil {
     }
 
     public ChildRelationship createChildRelationship(string query){
-        // VG: This may be a temp fix. Should we force SchemaUtil.generateQueryFromFieldSet additionalFields
+        // VG: This may be a temp fix. Should we force SchemaUtil1.generateQueryFromFieldSet additionalFields
         // to not include subqueries?
         // Takes a subquery string, parses it as a ChildRelationship, and adds it the soql object
         //query = query.toLowerCase().replace(')','').trim();
         query = query.trim().removeEnd(')').trim();
-        query = KSE.replaceCaseInsensitive(query, 'select ', 'select ');
-        query = KSE.replaceCaseInsensitive(query, 'from ', 'from ');
-        query = KSE.replaceCaseInsensitive(query, 'where ', 'where ');
-        query = KSE.replaceCaseInsensitive(query, 'order by ', 'order by ');
+        query = KSE1.replaceCaseInsensitive(query, 'select ', 'select ');
+        query = KSE1.replaceCaseInsensitive(query, 'from ', 'from ');
+        query = KSE1.replaceCaseInsensitive(query, 'where ', 'where ');
+        query = KSE1.replaceCaseInsensitive(query, 'order by ', 'order by ');
         list<string> soqlKeywords = new list<string>{'from ', 'where ', 'order by ', 'limit '};
         if (query.containsIgnoreCase('select')){
             string fieldNames = query.substringBetween('select ', 'from ').toLowerCase().replaceAll('(\\s+)', '');
@@ -757,7 +757,7 @@ public with sharing class SOQLUtil {
                 }
             }
 
-            SOQLUtil.ChildRelationship childRelationship = new SOQLUtil.ChildRelationship(this, relationshipName);
+            SOQLUtil1.ChildRelationship childRelationship = new SOQLUtil1.ChildRelationship(this, relationshipName);
 
             childRelationship.addFields(fieldNamesSet);
             childRelationship.setWhereClause(whereClause);
@@ -771,9 +771,9 @@ public with sharing class SOQLUtil {
     }
 
     private boolean isFieldAccessible(string sObjectName, string fieldPath){
-        //If a bad field path is specified, schemautil will throw an exception
+        //If a bad field path is specified, SchemaUtil1 will throw an exception
 
-        Boolean isFieldAccessible = SchemaUtil.getInstance().isFieldAccessible(fieldPath, sObjectName);
+        Boolean isFieldAccessible = SchemaUtil1.getInstance().isFieldAccessible(fieldPath, sObjectName);
 
         if(enforceFLS){
             return isFieldAccessible;

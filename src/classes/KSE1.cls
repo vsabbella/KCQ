@@ -2,7 +2,7 @@
  * @description code best practices that are also useful
  */
 @isTest
-global with sharing class KSE {
+global with sharing class KSE1 {
     class CustomException Extends Exception{}
 
     public static final string PAYMENT_TERM_DUE_DAYS = 'Due Days';
@@ -26,7 +26,7 @@ global with sharing class KSE {
 
         public List<sObject> getSortedList(){
             for(Integer i = fieldOrder.size()-1; i >= 0; i--){
-                KSE.sortList(sObjectsToSort, fieldOrder[i], fieldSortMethod.get(fieldOrder[i]));
+                KSE1.sortList(sObjectsToSort, fieldOrder[i], fieldSortMethod.get(fieldOrder[i]));
             }
             return sObjectsToSort;
         }
@@ -179,9 +179,9 @@ global with sharing class KSE {
             if(businessHoursMap == null){
 
         /*
-        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil
+        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil1
         */
-                SOQLUtil soql = new SOQLUtil('BusinessHours', true); //enforceFLS=true, running in user mode
+                SOQLUtil1 soql = new SOQLUtil1('BusinessHours', true); //enforceFLS=true, running in user mode
                 soql.addFields(new set<string>{
                         'Id','TimeZoneSidKey'
                 });
@@ -201,9 +201,9 @@ global with sharing class KSE {
             if(holidays == null){
 
         /*
-        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil
+        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil1
         */
-                SOQLUtil soql = new SOQLUtil('Holiday', true); //enforceFLS=true, running in user mode
+                SOQLUtil1 soql = new SOQLUtil1('Holiday', true); //enforceFLS=true, running in user mode
                 soql.addFields(new set<string>{
                         'Id','ActivityDate','RecurrenceType','RecurrenceDayOfMonth','RecurrenceMonthOfYear'
                 });
@@ -243,7 +243,7 @@ global with sharing class KSE {
         // KNDY-5271: Convert the previous start date into the calendar's time zone
         TimeZone calendarTZ = TimeZone.getTimeZone(businessHoursMap.get(businessHoursId).TimeZoneSidKey);
         TimeZone userTZ = UserInfo.getTimeZone();
-        startDateTime = KSE.convertTimeZones(startDateTime, userTZ,calendarTZ);
+        startDateTime = KSE1.convertTimeZones(startDateTime, userTZ,calendarTZ);
 
         // Find the business day that is after leadTime days
         if (leadTime != null && leadTime != 0){
@@ -289,7 +289,7 @@ global with sharing class KSE {
         // KNDY-5271: Convert the previous start date into the calendar's time zone
         TimeZone calendarTZ = TimeZone.getTimeZone(businessHoursMap.get(businessHoursId).TimeZoneSidKey);
         TimeZone userTZ = UserInfo.getTimeZone();
-        endDateTime = KSE.convertTimeZones(endDateTime, userTZ,calendarTZ);
+        endDateTime = KSE1.convertTimeZones(endDateTime, userTZ,calendarTZ);
 
         // Find the business day that is after leadTime days
         if (leadTime != null && leadTime != 0){
@@ -337,7 +337,7 @@ global with sharing class KSE {
             // KNDY-5271: Convert the previous start date into the calendar's time zone
             TimeZone calendarTZ = TimeZone.getTimeZone(businessHoursMap.get(businessHoursId).TimeZoneSidKey);
             TimeZone userTZ = UserInfo.getTimeZone();
-            previousStartDateTime = KSE.convertTimeZones(previousStartDateTime, userTZ, calendarTZ);
+            previousStartDateTime = KSE1.convertTimeZones(previousStartDateTime, userTZ, calendarTZ);
 
             // Make sure that the date is a business day.
             // If the date is not a working day, go back in time by one day at a time to get
@@ -380,7 +380,7 @@ global with sharing class KSE {
             // KNDY-5271: Convert the previous start date into the calendar's time zone
             TimeZone calendarTZ = TimeZone.getTimeZone(businessHoursMap.get(businessHoursId).TimeZoneSidKey);
             TimeZone userTZ = UserInfo.getTimeZone();
-            nextStartDateTime = KSE.convertTimeZones(nextStartDateTime, userTZ, calendarTZ);
+            nextStartDateTime = KSE1.convertTimeZones(nextStartDateTime, userTZ, calendarTZ);
 
             // Make sure that the date is a business day.
             // We could just use BusinessHours.nextStartDate(businessHoursId, nextStartDateTime),
@@ -508,9 +508,9 @@ global with sharing class KSE {
         Try {
 
         /*
-        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil
+        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil1
         */
-            SOQLUtil soql = new SOQLUtil('EmailTemplate', true); //enforceFLS=true, running in user mode
+            SOQLUtil1 soql = new SOQLUtil1('EmailTemplate', true); //enforceFLS=true, running in user mode
             soql.addFields(new set<string>{
                     'Id','name'
             });
@@ -520,7 +520,7 @@ global with sharing class KSE {
 
 
 
-            KSE.sendEmail(UserInfo.getUserId(), objEmail.Id, null);
+            KSE1.sendEmail(UserInfo.getUserId(), objEmail.Id, null);
         }
         Catch (Exception ex) {}
     }
@@ -558,7 +558,7 @@ global with sharing class KSE {
 
         String whereClause = '';
 
-        SOQLUtil soql = new SOQLUtil('KNDY4__Item__c');
+        SOQLUtil1 soql = new SOQLUtil1('KNDY4__Item__c');
         soql.addFields(new Set<String>{'id', 'Name', 'KNDY4__Description__c', 'KNDY4__Purchasing_UOM__c', 'KNDY4__Source__c', 'KNDY4__Non_Inventory__c',
                 'KNDY4__Purchasing_UOM__r.Name', 'KNDY4__Purchasing_UOM__r.Id', 'KNDY4__Stocking_UOM__c', 'KNDY4__Stocking_UOM__r.Name'});
 
@@ -587,7 +587,7 @@ global with sharing class KSE {
 
         String whereClause = '';
 
-        SOQLUtil soql = new SOQLUtil('KNDY4__Item__c');
+        SOQLUtil1 soql = new SOQLUtil1('KNDY4__Item__c');
         soql.addFields(new Set<String>{'id', 'Name', 'KNDY4__Description__c', 'KNDY4__Purchasing_UOM__c', 'KNDY4__Source__c', 'KNDY4__Purchasing_UOM__r.Name', 'KNDY4__Purchasing_UOM__r.Id', 'KNDY4__Stocking_UOM__c', 'KNDY4__Stocking_UOM__r.Name'});
 
         try {
@@ -604,7 +604,7 @@ global with sharing class KSE {
         return item;  // returns as JSON
     }
 
-    public KSE(Apexpages.standardController c){} // allow this class to be a controller extension
+    public KSE1(Apexpages.standardController c){} // allow this class to be a controller extension
 
     /**
      * @description add two numbers, return the result, account for nulls that may be passed
@@ -636,9 +636,9 @@ global with sharing class KSE {
             return FieldUsedtoReleasePO;
 
         /*
-        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil
+        //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil1
         */
-        SOQLUtil soql = new SOQLUtil('KNDY4__Configuration__c', true); //enforceFLS=true, running in user mode
+        SOQLUtil1 soql = new SOQLUtil1('KNDY4__Configuration__c', true); //enforceFLS=true, running in user mode
         soql.addFields(new set<string>{
                 'KNDY4__Value__c'
         });
@@ -956,7 +956,7 @@ global with sharing class KSE {
         }
         if(Trigger.isUpdate){
             for(sObject sObj: Trigger.new){
-                if( KSE.isFieldChanging('KNDY4__Finalized__c' , sObj, Trigger.oldMap) && sObj.get('KNDY4__Finalized__c') == false && sObj.get('KNDY4__Finalized_Hidden__c') != false) {
+                if( KSE1.isFieldChanging('KNDY4__Finalized__c' , sObj, Trigger.oldMap) && sObj.get('KNDY4__Finalized__c') == false && sObj.get('KNDY4__Finalized_Hidden__c') != false) {
                     sObj.addError('Label.Click_Unfinalize');
                 }
             }
@@ -974,7 +974,7 @@ global with sharing class KSE {
             for(sObject sObj: Trigger.new){
                 KNDY4__Supplier_Invoice__c si = (KNDY4__Supplier_Invoice__c)sObj;
                 if (!si.KNDY4__Finalize_On_Creation__c) {
-                    if( KSE.isFieldChanging('KNDY4__Finalized__c' , si, Trigger.oldMap) && si.KNDY4__Finalized__c == false && si.KNDY4__Finalized_Hidden__c != false) {
+                    if( KSE1.isFieldChanging('KNDY4__Finalized__c' , si, Trigger.oldMap) && si.KNDY4__Finalized__c == false && si.KNDY4__Finalized_Hidden__c != false) {
                         si.addError('Click_Unfinalize');
                     }
                 }
@@ -1408,7 +1408,7 @@ global with sharing class KSE {
         //List <Schema.PicklistEntry> pickListValues = Schema.getGlobalDescribe().get(objectName).getDescribe().fields.getMap().get(fieldApiName).getDescribe().getPicklistValues();
 
         //KNDY-7537
-        Map<String, sObjectField> objectFields = SchemaUtil.getInstance().getFieldsMap(objectName);
+        Map<String, sObjectField> objectFields = SchemaUtil1.getInstance().getFieldsMap(objectName);
         List<Schema.PicklistEntry> pickListValues = objectFields.get(fieldApiName).getDescribe().getPicklistValues();
 
         String defaultVal = 'None';
@@ -1433,7 +1433,7 @@ global with sharing class KSE {
 
         List<KNDY4__Grid_Views_Config__c> gridViews = new List<KNDY4__Grid_Views_Config__c>();
 
-        SOQLUtil soql = new SOQLUtil('KNDY4__Grid_Views_Config__c', true); //enforceFLS=true, running in user mode
+        SOQLUtil1 soql = new SOQLUtil1('KNDY4__Grid_Views_Config__c', true); //enforceFLS=true, running in user mode
         soql.addFields(new set<string>{
                 'Name','KNDY4__Grid_Name__c','KNDY4__View_Name__c','KNDY4__Fieldset_Name__c','KNDY4__Show__c','KNDY4__View_Dropdown_Index__c'
         });
@@ -1534,18 +1534,18 @@ global with sharing class KSE {
         map<Id,Decimal> parentValueMap = new Map<Id,Decimal>();
         set<Id> parentIds = new Set<Id>();
         List<SObject> parentObjects = new List<SObject>();
-        SOQLUtil soql;
+        SOQLUtil1 soql;
 
         if(sObjectType == KNDY4__Agreement_Line__c.sObjectType){
-            parentIds = KSE.grepRelatedIdSetFromList(sObjects,'KNDY4__Agreement__c');
+            parentIds = KSE1.grepRelatedIdSetFromList(sObjects,'KNDY4__Agreement__c');
 
-            soql = new SOQLUtil('KNDY4__Agreement__c', true); //enforceFLS=true, running in user mode
+            soql = new SOQLUtil1('KNDY4__Agreement__c', true); //enforceFLS=true, running in user mode
             soql.addFields(new set<string>{
                     'Id'
             });
             soql.setWhereClause('Id IN :parentIds FOR UPDATE');
 
-            SOQLUtil.ChildRelationship agrLineRel = new SOQLUtil.ChildRelationship(soql, 'KNDY4__Agreement_Lines__r');
+            SOQLUtil1.ChildRelationship agrLineRel = new SOQLUtil1.ChildRelationship(soql, 'KNDY4__Agreement_Lines__r');
             agrLineRel.addFields(new set<string>{
                     'KNDY4__Line__c'
             });
@@ -1553,16 +1553,16 @@ global with sharing class KSE {
 
 
         } else if(sObjectType == KNDY4__Sales_Order_Line__c.sObjectType){
-            parentIds = KSE.grepRelatedIdSetFromList(sObjects, 'KNDY4__Sales_Order__c');
-            //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil
+            parentIds = KSE1.grepRelatedIdSetFromList(sObjects, 'KNDY4__Sales_Order__c');
+            //KNDY-10473: Adding CRUD/FLS checks with SOQLUtil1
 
-            soql = new SOQLUtil('KNDY4__Sales_Order__c', true); //enforceFLS=true, running in user mode
+            soql = new SOQLUtil1('KNDY4__Sales_Order__c', true); //enforceFLS=true, running in user mode
             soql.addFields(new set<string>{
                     'Id'
             });
             soql.setWhereClause('Id IN :parentIds FOR UPDATE');
 
-            SOQLUtil.ChildRelationship soLineRel = new SOQLUtil.ChildRelationship(soql, 'KNDY4__Sales_Order_Lines__r');
+            SOQLUtil1.ChildRelationship soLineRel = new SOQLUtil1.ChildRelationship(soql, 'KNDY4__Sales_Order_Lines__r');
             soLineRel.addFields(new set<string>{
                     'KNDY4__Line__c'
             });
@@ -1683,7 +1683,7 @@ global with sharing class KSE {
 
             privateRTDevNameMap = new Map<String,RecordType>();
 	       /*
-            SOQLUtil soql = new SOQLUtil('RecordType', true); //enforceFLS=true, running in user mode
+            SOQLUtil1 soql = new SOQLUtil1('RecordType', true); //enforceFLS=true, running in user mode
             soql.addFields(new set<string>{
                     'DeveloperName','sObjectType','Id'
             });
@@ -1700,8 +1700,8 @@ global with sharing class KSE {
     global static String Namespace { get {
         if ( Namespace != null ) return Namespace;
 
-        //Security review, this query needs to run in system mode.  Can't use SOQLUtil due to circular reference.
-        ApexClass ac = [SELECT NameSpacePrefix FROM ApexClass WHERE Name = 'KSE' limit 1];
+        //Security review, this query needs to run in system mode.  Can't use SOQLUtil1 due to circular reference.
+        ApexClass ac = [SELECT NameSpacePrefix FROM ApexClass WHERE Name = 'KSE1' limit 1];
 
         Namespace = ac.NameSpacePrefix != null ? ac.NameSpacePrefix : '';
         return Namespace;

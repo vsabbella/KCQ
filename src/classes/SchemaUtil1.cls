@@ -2,7 +2,7 @@
  * @description utilities to build queries and field lists
  */
 @isTest
-global with sharing class SchemaUtil {
+global with sharing class SchemaUtil1 {
 
     private Map<String, Schema.SObjectType> globalDescribe;
 
@@ -11,11 +11,11 @@ global with sharing class SchemaUtil {
 
     global class SchemaUtilException extends Exception {}
 
-    global static SchemaUtil getInstance(){
-        if ( instance == null ) instance = new SchemaUtil();
+    global static SchemaUtil1 getInstance(){
+        if ( instance == null ) instance = new SchemaUtil1();
         return instance;
     }
-    private static SchemaUtil instance = null;
+    private static SchemaUtil1 instance = null;
 
     //Check if the fieldpath is valid.
     public boolean isValidFieldPath(string fieldPath, string sObjectName){
@@ -25,7 +25,7 @@ global with sharing class SchemaUtil {
         }
 
         string baseObject = sObjectName;
-        map<string, sObjectField> mObjectFields = SchemaUtil.getInstance().getFieldsMap(baseObject);
+        map<string, sObjectField> mObjectFields = SchemaUtil1.getInstance().getFieldsMap(baseObject);
         string fieldRef = fieldPath;
 
         if(fieldPath.contains('.')){
@@ -58,7 +58,7 @@ global with sharing class SchemaUtil {
                     baseObject = fld.getReferenceTo()[0].getDescribe().getLocalName();
                     system.debug('baseObject'+baseObject);
 
-                    mObjectFields = SchemaUtil.getInstance().getFieldsMap(baseObject);
+                    mObjectFields = SchemaUtil1.getInstance().getFieldsMap(baseObject);
                 }
 
             }
@@ -124,7 +124,7 @@ global with sharing class SchemaUtil {
         }
 
         string baseObject = sObjectName;
-        map<string, sObjectField> mObjectFields = SchemaUtil.getInstance().getFieldsMap(baseObject);
+        map<string, sObjectField> mObjectFields = SchemaUtil1.getInstance().getFieldsMap(baseObject);
         string fieldRef = fieldPath;
 
         if(fieldPath.contains('.')){
@@ -157,7 +157,7 @@ global with sharing class SchemaUtil {
                 if(!fld.getReferenceTo().isEmpty() && i != j-1){
                     baseObject = fld.getReferenceTo()[0].getDescribe().getLocalName();
                     //System.debug(LoggingLevel.INFO, '*** baseObject: ' + baseObject);
-                    mObjectFields = SchemaUtil.getInstance().getFieldsMap(baseObject);
+                    mObjectFields = SchemaUtil1.getInstance().getFieldsMap(baseObject);
                     //System.debug(LoggingLevel.INFO, '*** mObjectFields: ' + mObjectFields);
                 }
 
@@ -180,10 +180,10 @@ global with sharing class SchemaUtil {
 
 
     // TODO make this a private constructor
-    // private SchemaUtil() {
-    global SchemaUtil() {
+    // private SchemaUtil1() {
+    global SchemaUtil1() {
         globalDescribe=Schema.getGlobalDescribe();
-        namespace=KSE.namespace;
+        namespace=KSE1.namespace;
     }
 
 
@@ -272,7 +272,7 @@ global with sharing class SchemaUtil {
             Set<String> 	additionalFields,
             String 			whereClause){
 
-        SOQLUtil soql = new SOQLUtil(sObjectName);
+        SOQLUtil1 soql = new SOQLUtil1(sObjectName);
 
         Set<String> fields_s = new Set<String>{'Id'};
         if (sObjectName != 'Task') {
@@ -285,7 +285,7 @@ global with sharing class SchemaUtil {
                     fields_s.add(s.toLowerCase().trim());
                 } else {
                     // A subquery is being passed in the additionalFields
-                    SOQLUtil.ChildRelationship childRel = soql.createChildRelationship(s);
+                    SOQLUtil1.ChildRelationship childRel = soql.createChildRelationship(s);
                     soql.addChildRelationship(childRel);
                 }
             }
@@ -455,7 +455,7 @@ global with sharing class SchemaUtil {
         List<Schema.FieldSetMember> ret = new List<Schema.FieldSetMember>();
         List<String> strReturn = new List<String>();
 
-        String fsName = KSE.NamespaceUU + fieldSet;
+        String fsName = KSE1.NamespaceUU + fieldSet;
 
         if (  objectType.getDescribe().FieldSets.getMap().get(fsName) != null ) {
             ret = (objectType.getDescribe().FieldSets.getMap().get(fsName).getFields() ) ;

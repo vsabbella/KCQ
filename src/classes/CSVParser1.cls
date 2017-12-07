@@ -3,7 +3,7 @@
  */
 @isTest
 
-public with sharing class CSVParser {
+public with sharing class CSVParser1 {
 
     public class CSVParserException extends Exception{}
 
@@ -163,7 +163,7 @@ public with sharing class CSVParser {
         rows.remove(0);
 
         //Get fields map for the sobjectype passed.
-        SchemaUtil util = SchemaUtil.getInstance();
+        SchemaUtil1 util = SchemaUtil1.getInstance();
         Map<String, sObjectField> fmap = util.addNoNSfieldsToMap(sobjType.getDescribe().fields.getMap());
 
         //Iterate thru each CSV Line and populate sobject recs.
@@ -294,7 +294,7 @@ set<string> stdfldstring = new set<string>{ 'CreatedBy', 'CreatedById','CreatedD
             //system.debug('mSourceRefValToSourceId'+mSourceRefValToSourceId);
             //Iterate thru sobjects and put the related field with Source Ref Id
             for(sObject rec :recs ){
-                string valfield = KSE.NamespaceUU+relSourceDef.ChildFieldToUpdate.trim();
+                string valfield = KSE1.NamespaceUU+relSourceDef.ChildFieldToUpdate.trim();
                 //system.debug('valfield'+valfield +'rec'+rec);
                 rec.put(relSourceDef.ChildFieldToUpdate.trim(),mSourceRefValToSourceId.get((string)rec.get(relSourceDef.ChildFieldToUpdate.trim())));
             }

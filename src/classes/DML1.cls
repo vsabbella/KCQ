@@ -1,5 +1,5 @@
 @isTest
-public with sharing class DML {
+public with sharing class DML1 {
 
     private static boolean check_access = ( Test.isRunningTest() == false ); // dont throw IA exception in tests
     @TestVisible
@@ -58,8 +58,8 @@ public with sharing class DML {
 
 
 	/*
-	Instead of calling DML directly, call the methods below which explicitly state we are inserting in system mode, or user mode.
-	When in user mode, we check for CRUD / FLS access before doing the DML.  If they don't have access we throw an exception.
+	Instead of calling DML1 directly, call the methods below which explicitly state we are inserting in system mode, or user mode.
+	When in user mode, we check for CRUD / FLS access before doing the DML1.  If they don't have access we throw an exception.
 
 	Unfortunately this method doesn't work for upserts for 2 reasons:
 	1) upserts can't be done on a generic sObject/sObject list
@@ -68,15 +68,15 @@ public with sharing class DML {
 	so for upserts we use this pattern in the calling code:
 
 	system mode:
-	DML.upsertAsSystem(); upsert sObjectList key;
+	DML1.upsertAsSystem(); upsert sObjectList key;
 
 	user mode:
-	DML.checkUpsertAsUser(sObjectList); upsert sObjectList;
+	DML1.checkUpsertAsUser(sObjectList); upsert sObjectList;
 	*/
 
 
     /*
-    * BEGIN: Pass-thru methods to do raw DML operations in system mode.  Allows us to explicity show this
+    * BEGIN: Pass-thru methods to do raw DML1 operations in system mode.  Allows us to explicity show this
     * is what we mean to do for security review purposes.
     */
     //system mode, single object
@@ -104,7 +104,7 @@ public with sharing class DML {
 
 
     /*
-    * BEGIN: DML in user mode methods
+    * BEGIN: DML1 in user mode methods
     */
     //user mode, single object
     public static Database.SaveResult   insertAsUser(sObject obj) { return insertAsUserWorker(obj, true); }
@@ -240,7 +240,7 @@ public with sharing class DML {
 
         //KNDY-7410
         //Map<String, Schema.SobjectField> fmap = ctype.getDescribe().fields.getMap();
-        SchemaUtil util = SchemaUtil.getInstance();
+        SchemaUtil1 util = SchemaUtil1.getInstance();
         Map<String, sObjectField> fmap = util.addNoNSfieldsToMap(ctype.getDescribe().fields.getMap());
 
 
@@ -273,7 +273,7 @@ public with sharing class DML {
             Schema.SObjectType ctype = obj.getSObjectType();
             //KNDY-7410
             //Map<String, Schema.SobjectField> fmap = ctype.getDescribe().fields.getMap();
-            SchemaUtil util = SchemaUtil.getInstance();
+            SchemaUtil1 util = SchemaUtil1.getInstance();
             Map<String, sObjectField> fmap = util.addNoNSfieldsToMap(ctype.getDescribe().fields.getMap());
 
 
@@ -308,7 +308,7 @@ public with sharing class DML {
 
 
     /************************************************************
-	* BEGIN MISC CRUD / DML methods.
+	* BEGIN MISC CRUD / DML1 methods.
     *************************************************************/
 
 
@@ -327,7 +327,7 @@ public with sharing class DML {
     }
 
     /************************************************************
-	* END MISC CRUD / DML methods.
+	* END MISC CRUD / DML1 methods.
     *************************************************************/
 
 

@@ -2,8 +2,8 @@
 public class TestFuel {
     public class MyException extends Exception {}
 
-    public Map<String,String> CustomerRecordTypes = KSE.RecordTypeDevNameMap('KNDY4__Customer__c');
-    public map <string,string> SupplierRecordTypes = KSE.RecordTypeDevNameMap('KNDY4__Supplier__c');
+    public Map<String,String> CustomerRecordTypes = KSE1.RecordTypeDevNameMap('KNDY4__Customer__c');
+    public map <string,string> SupplierRecordTypes = KSE1.RecordTypeDevNameMap('KNDY4__Supplier__c');
 
     public Account account {
         get {
@@ -705,7 +705,7 @@ public class TestFuel {
         get{
             if(GLTypeTestData == null){
                 string glTypeBody = [SELECT id, Body FROM StaticResource WHERE Name = 'TestData_GLType' LIMIT 1].body.toString();
-                GLTypeTestData = (List<KNDY4__GL_Type__c>)CSVParser.parseRecords(KNDY4__GL_Type__c.sObjectType, glTypeBody);
+                GLTypeTestData = (List<KNDY4__GL_Type__c>)CSVParser1.parseRecords(KNDY4__GL_Type__c.sObjectType, glTypeBody);
                 system.debug('GLTypeTestData:'+GLTypeTestData);
                 insert GLTypeTestData;
             }
@@ -735,7 +735,7 @@ public class TestFuel {
                 //List<sObject> recs = Test.loadData(KNDY4__GL_Account__c.sObjectType, 'TestData_GLAccount');
                 //GLAccountTestData = (List<KNDY4__GL_Account__c>)recs;
                 string glAccountBody = [SELECT id, Body FROM StaticResource WHERE Name = 'TestData_GLAccount' LIMIT 1].body.toString();
-                GLAccountTestData = (List<KNDY4__GL_Account__c>)CSVParser.parseRecords(KNDY4__GL_Account__c.sObjectType, glAccountBody);
+                GLAccountTestData = (List<KNDY4__GL_Account__c>)CSVParser1.parseRecords(KNDY4__GL_Account__c.sObjectType, glAccountBody);
                 system.debug(logginglevel.info,'GLAccountTestData:'+GLAccountTestData);
                 insert GLAccountTestData;
             }
@@ -947,7 +947,7 @@ public class TestFuel {
                 KNDY4__Package_Class__c eachClass = new KNDY4__Package_Class__c(Name='Each', KNDY4__Level__c = 1);
                 packageClassList = new List<KNDY4__Package_Class__c>{ palletClass, caseClass, eachClass };
 
-                //DML.systemTime = System.now().addHours(-2);
+                //DML1.systemTime = System.now().addHours(-2);
                 List<KNDY4__Configuration__c> configList = new List<KNDY4__Configuration__c>{ new KNDY4__Configuration__c(Name = KNDY4__Package_Class__c.sObjectType.getDescribe().getLocalName() + '-' + KNDY4__Package_Class__c.sObjectType.getDescribe().getKeyPrefix(),KNDY4__Value__c = UserInfo.getUserId()) };
                 insert configList;
 
@@ -1223,7 +1223,7 @@ public class TestFuel {
                 }
                 insert itemList;
 
-                //DML.systemTime = System.now().addHours(-2);
+                //DML1.systemTime = System.now().addHours(-2);
                 List<KNDY4__Configuration__c> configList = new List<KNDY4__Configuration__c>{
                         new KNDY4__Configuration__c(Name = KNDY4__Package_Class__c.sObjectType.getDescribe().getLocalName() + '-' + KNDY4__Package_Class__c.sObjectType.getDescribe().getKeyPrefix(),KNDY4__Value__c = UserInfo.getUserId()),
                         new KNDY4__Configuration__c(Name = KNDY4__Item__c.sObjectType.getDescribe().getLocalName() + '-' + KNDY4__Item__c.sObjectType.getDescribe().getKeyPrefix(),KNDY4__Value__c = UserInfo.getUserId())
@@ -6903,7 +6903,7 @@ public class TestFuel {
                 paymentTermInfo.KNDY4__Discount_Percent__c = 10.0;
                 insert paymentTermInfo;
 
-                map <string,string> rtMap1 = KSE.RecordTypeDevNameMap('KNDY4__Supplier__c');
+                map <string,string> rtMap1 = KSE1.RecordTypeDevNameMap('KNDY4__Supplier__c');
 
                 //Create Supplier, assign remit and payment terms info
                 KNDY4__Supplier__c supplier = new KNDY4__Supplier__c();
@@ -6994,14 +6994,14 @@ public class TestFuel {
                 intercompanyInvestmentInvoice.KNDY4__Type__c = 'Intercompany Investment';
                 intercompanyInvestmentInvoice.KNDY4__Transaction_Type__c = 'Intercompany Investment';
 
-                DML.insertAsSystem(intercompanyInvestmentInvoice);
+                DML1.insertAsSystem(intercompanyInvestmentInvoice);
                 //Insert ;
 
                 KNDY4__Invoice_Line__c invLine = new KNDY4__Invoice_Line__c();
                 invLine.KNDY4__Invoice__c = intercompanyInvestmentInvoice.Id;
                 invLine.KNDY4__Extended_Amount__c = 10000;
 
-                DML.insertAsSystem(invLine);
+                DML1.insertAsSystem(invLine);
                // Insert ;
 
             }
@@ -7021,14 +7021,14 @@ public class TestFuel {
                 intercompanyPayment.KNDY4__Transaction_Date__c = system.now();
                 intercompanyPayment.KNDY4__Type__c = 'Intercompany Payment';
                 intercompanyPayment.KNDY4__Transaction_Type__c = 'Intercompany Payment';
-                DML.insertAsSystem(intercompanyPayment);
+                DML1.insertAsSystem(intercompanyPayment);
                 //Insert ;
 
                 KNDY4__Payment_Line__c pml = new KNDY4__Payment_Line__c();
                 pml.KNDY4__Payment__c = intercompanyPayment.Id;
                 pml.KNDY4__Amount__c = 10000;
                 pml.KNDY4__Type__c = 'Intercompany Payment';
-                DML.insertAsSystem(pml);
+                DML1.insertAsSystem(pml);
                 //Insert ;
 
                 KNDY4__Payment_Match__c pm = new KNDY4__Payment_Match__c();
@@ -7037,7 +7037,7 @@ public class TestFuel {
                 pm.KNDY4__Invoice__c = intercompanyInvestmentInvoice.Id;
                 pm.KNDY4__Payment_Line__c = pml.Id;
                 Insert pm;
-                //DML.insertAsSystem();
+                //DML1.insertAsSystem();
 
             }
             return intercompanyPayment;
@@ -7057,13 +7057,13 @@ public class TestFuel {
                 intercompanyPayment1.KNDY4__Type__c = 'Intercompany Payment';
                 intercompanyPayment1.KNDY4__Transaction_Type__c = 'Intercompany Payment';
                 //insert ;
-                DML.insertAsSystem(intercompanyPayment1);
+                DML1.insertAsSystem(intercompanyPayment1);
 
                 KNDY4__Payment_Line__c pml = new KNDY4__Payment_Line__c();
                 pml.KNDY4__Payment__c = intercompanyPayment1.Id;
                 pml.KNDY4__Amount__c = 10000;
                 pml.KNDY4__Type__c = 'Intercompany Payment';
-                DML.insertAsSystem(pml);
+                DML1.insertAsSystem(pml);
                 //insert pml;
 
                 KNDY4__Payment_Match__c pm = new KNDY4__Payment_Match__c();
@@ -7071,7 +7071,7 @@ public class TestFuel {
                 pm.KNDY4__Amount__c = pml.KNDY4__Amount__c;
                 pm.KNDY4__Invoice__c = intercompanyInvestmentInvoice.Id;
                 pm.KNDY4__Payment_Line__c = pml.Id;
-                DML.insertAsSystem(pm);
+                DML1.insertAsSystem(pm);
                //insert pm;
 
             }

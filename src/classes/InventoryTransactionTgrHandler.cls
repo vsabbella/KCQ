@@ -12,7 +12,7 @@ public with sharing class InventoryTransactionTgrHandler {
         Map<Id, List<AggregateResult>> AggResultListById = new Map<Id, List<AggregateResult>>();
         Map<Id,KNDY4__Inventory_Transaction__c> newMap = new  Map<Id,KNDY4__Inventory_Transaction__c>(newList);
         for(Id InvTransId: newMap.keyset()){
-            KCQUtils KCQUtilObj = new KCQUtils();
+            KCQUtils1 KCQUtilObj = new KCQUtils1();
             Sobject CQMaterialTransactionSObj = KCQUtilObj.getCQMaterialTransactionInstance();
             KNDY4__Inventory_Transaction__c ITRecord = newMap.get(InvTransId);
             if(ITTypes.contains(ITRecord.KNDY4__Type__c)){
@@ -81,7 +81,7 @@ public with sharing class InventoryTransactionTgrHandler {
         final String CQMT_TRANSCODE_INCOMERECEIPT = 'INCOMING_RECEIPT';
         final String CQMT_STATUS_PENDING = 'Pending';
 
-        KCQUtils KCQUtilObj = new KCQUtils();
+        KCQUtils1 KCQUtilObj = new KCQUtils1();
         List<Sobject> CQMaterialTransactionSObjList = new List<Sobject>();
         List<String> LotNumbers = new List<String>();
 
@@ -148,7 +148,7 @@ public with sharing class InventoryTransactionTgrHandler {
     public static SObject getCQMaterialTransactionSobject(){
         final String CQMT_TRANSCODE_INCOMERECEIPT = 'INCOMING_RECEIPT';
         final String CQMT_STATUS_PENDING = 'Pending';
-        KCQUtils KCQUtilObj = new KCQUtils();
+        KCQUtils1 KCQUtilObj = new KCQUtils1();
         Sobject CQMaterialTransactionSObj = KCQUtilObj.getCQMaterialTransactionInstance();
         //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITWIP.KNDY4__Item__r.CQ_Part__c);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Rev__c, 'a1P1I000000desi');
