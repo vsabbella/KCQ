@@ -1,5 +1,5 @@
 @isTest
-public class TestFuel {
+public class TestFuel1 {
     public class MyException extends Exception {}
 
     public Map<String,String> CustomerRecordTypes = KSE1.RecordTypeDevNameMap('KNDY4__Customer__c');
@@ -47,7 +47,7 @@ public class TestFuel {
         get {
             if(currencyUSD== null){
                 currencyUSD = new KNDY4__Currency__c();
-                currencyUSD.name = 'USD TestFuel';
+                currencyUSD.name = 'USD TestFuel1';
                 //currencyUSD.KNDY4__Active__c = TRUE;
                 currencyUSD.KNDY4__ISO_Code__c = 'USD';
                 currencyUSD.KNDY4__Currency__c = 'USD Currency';
@@ -63,7 +63,7 @@ public class TestFuel {
         get {
             if(currencyGBP == null){
                 currencyGBP = new KNDY4__Currency__c();
-                currencyGBP.name = 'GBP TestFuel';
+                currencyGBP.name = 'GBP TestFuel1';
                 //currencyUSD.KNDY4__Active__c = TRUE;
                 currencyGBP.KNDY4__ISO_Code__c = 'GBP';
                 currencyGBP.KNDY4__Currency__c = 'British Pound';
@@ -79,7 +79,7 @@ public class TestFuel {
         get {
             if(currencyEUR == null){
                 currencyEUR = new KNDY4__Currency__c();
-                currencyEUR.name = 'EUR TestFuel';
+                currencyEUR.name = 'EUR TestFuel1';
                 //currencyUSD.KNDY4__Active__c = TRUE;
                 currencyEUR.KNDY4__ISO_Code__c = 'EUR';
                 currencyEUR.KNDY4__Currency__c = 'EURO Currency';
@@ -95,7 +95,7 @@ public class TestFuel {
         get {
             if(currencySGD == null){
                 currencySGD = new KNDY4__Currency__c();
-                currencySGD.name = 'SGD TestFuel';
+                currencySGD.name = 'SGD TestFuel1';
                 //currencyUSD.KNDY4__Active__c = TRUE;
                 currencySGD.KNDY4__ISO_Code__c = 'SGD';
                 currencySGD.KNDY4__Currency__c = 'SGD Currency';
@@ -111,7 +111,7 @@ public class TestFuel {
         get {
             if(currencyCAD == null){
                 currencyCAD = new KNDY4__Currency__c();
-                currencyCAD.name = 'CAD TestFuel';
+                currencyCAD.name = 'CAD TestFuel1';
                 //currencyUSD.KNDY4__Active__c = TRUE;
                 currencyCAD.KNDY4__ISO_Code__c = 'CAD';
                 currencyCAD.KNDY4__Currency__c = 'CAD Currency';
@@ -137,11 +137,11 @@ public class TestFuel {
                 company.KNDY4__B_Days__c = 60;
                 company.KNDY4__C_Days__c = 180;
                 company.KNDY4__Company_Identifier__c = 'KEN' + '-mainCompany#1';
-                company.KNDY4__Comp_Currency__c = TestFuel.currencyUSD.id;
-                company.KNDY4__Consol_Currency__c = TestFuel.currencyUSD.id;
-                company.KNDY4__Stat_Currency__c = TestFuel.currencyUSD.id;
-                company.KNDY4__Subs_Currency__c = TestFuel.currencyUSD.id;
-                company.KNDY4__Default_Transaction_Currency__c = TestFuel.currencyUSD.id;
+                company.KNDY4__Comp_Currency__c = TestFuel1.currencyUSD.id;
+                company.KNDY4__Consol_Currency__c = TestFuel1.currencyUSD.id;
+                company.KNDY4__Stat_Currency__c = TestFuel1.currencyUSD.id;
+                company.KNDY4__Subs_Currency__c = TestFuel1.currencyUSD.id;
+                company.KNDY4__Default_Transaction_Currency__c = TestFuel1.currencyUSD.id;
                 //company.KNDY4__Finalize_Supplier_Invoices_w_Exceptions__c = false; //KNDY-2817
                 company.KNDY4__Serial_Control__c = AT_RECEIPT;
                 system.assert(AutoBackdatingConfigVal != null);//Make the setting to default No as all existing tests are written based on that flow.
@@ -176,11 +176,11 @@ public class TestFuel {
                 altCompany.KNDY4__B_Days__c = 60;
                 altCompany.KNDY4__C_Days__c = 180;
                 altCompany.KNDY4__Company_Identifier__c = 'KEN' + '-AltCompany#2';
-                altCompany.KNDY4__Comp_Currency__c = TestFuel.currencyUSD.id;
-                altCompany.KNDY4__Consol_Currency__c = TestFuel.currencyEUR.id;
-                altCompany.KNDY4__Stat_Currency__c = TestFuel.currencyGBP.id;
-                altCompany.KNDY4__Subs_Currency__c = TestFuel.currencyUSD.id;
-                altCompany.KNDY4__Default_Transaction_Currency__c = TestFuel.currencyUSD.id;
+                altCompany.KNDY4__Comp_Currency__c = TestFuel1.currencyUSD.id;
+                altCompany.KNDY4__Consol_Currency__c = TestFuel1.currencyEUR.id;
+                altCompany.KNDY4__Stat_Currency__c = TestFuel1.currencyGBP.id;
+                altCompany.KNDY4__Subs_Currency__c = TestFuel1.currencyUSD.id;
+                altCompany.KNDY4__Default_Transaction_Currency__c = TestFuel1.currencyUSD.id;
                 //company.KNDY4__Finalize_Supplier_Invoices_w_Exceptions__c = false; //KNDY-2817
                 system.assert(AutoBackdatingConfigVal != null);//Make the setting to default No as all existing tests are written based on that flow.
                 insert altCompany;
@@ -619,8 +619,8 @@ public class TestFuel {
                 KNDY4__Exchange_Rate__c exchangeRate1, exchangeRate2, exchangeRate3, exchangeRate4, exchangeRate5;
                 exchangeRate1= new KNDY4__Exchange_Rate__c();
                 exchangeRate1.KNDY4__Active__c = true;
-                exchangeRate1.KNDY4__From_Currency__c = TestFuel.currencyUSD.id;
-                exchangeRate1.KNDY4__To_Currency__c = TestFuel.currencySGD.id;
+                exchangeRate1.KNDY4__From_Currency__c = TestFuel1.currencyUSD.id;
+                exchangeRate1.KNDY4__To_Currency__c = TestFuel1.currencySGD.id;
                 exchangeRate1.KNDY4__Daily_Monthly__c = 'Daily';
                 exchangeRate1.KNDY4__Multiplier_Exchange_Rate__c = 1.250000;
                 exchangeRate1.KNDY4__rate_start_datetime__c = system.now();
@@ -631,8 +631,8 @@ public class TestFuel {
 
                 exchangeRate2= new KNDY4__Exchange_Rate__c();
                 exchangeRate2.KNDY4__Active__c = true;
-                exchangeRate2.KNDY4__From_Currency__c = TestFuel.currencySGD.id;
-                exchangeRate2.KNDY4__To_Currency__c = TestFuel.currencyGBP.id;
+                exchangeRate2.KNDY4__From_Currency__c = TestFuel1.currencySGD.id;
+                exchangeRate2.KNDY4__To_Currency__c = TestFuel1.currencyGBP.id;
                 exchangeRate2.KNDY4__Daily_Monthly__c = 'Daily';
                 exchangeRate2.KNDY4__Multiplier_Exchange_Rate__c = 0.470000;
                 exchangeRate2.KNDY4__rate_start_datetime__c = system.now();
@@ -642,8 +642,8 @@ public class TestFuel {
 
                 exchangeRate3= new KNDY4__Exchange_Rate__c();
                 exchangeRate3.KNDY4__Active__c = true;
-                exchangeRate3.KNDY4__From_Currency__c = TestFuel.currencySGD.id;
-                exchangeRate3.KNDY4__To_Currency__c = TestFuel.currencyEUR.id;
+                exchangeRate3.KNDY4__From_Currency__c = TestFuel1.currencySGD.id;
+                exchangeRate3.KNDY4__To_Currency__c = TestFuel1.currencyEUR.id;
                 exchangeRate3.KNDY4__Daily_Monthly__c = 'Daily';
                 exchangeRate3.KNDY4__Multiplier_Exchange_Rate__c = 0.580000;
                 exchangeRate3.KNDY4__rate_start_datetime__c = system.now();
@@ -653,8 +653,8 @@ public class TestFuel {
 
                 exchangeRate4= new KNDY4__Exchange_Rate__c();
                 exchangeRate4.KNDY4__Active__c = true;
-                exchangeRate4.KNDY4__From_Currency__c = TestFuel.currencySGD.id;
-                exchangeRate4.KNDY4__To_Currency__c = TestFuel.currencyUSD.id;
+                exchangeRate4.KNDY4__From_Currency__c = TestFuel1.currencySGD.id;
+                exchangeRate4.KNDY4__To_Currency__c = TestFuel1.currencyUSD.id;
                 exchangeRate4.KNDY4__Daily_Monthly__c = 'Daily';
                 exchangeRate4.KNDY4__Multiplier_Exchange_Rate__c = 0.800000;
                 exchangeRate4.KNDY4__rate_start_datetime__c = system.now();
@@ -664,8 +664,8 @@ public class TestFuel {
 
                 exchangeRate5= new KNDY4__Exchange_Rate__c();
                 exchangeRate5.KNDY4__Active__c = true;
-                exchangeRate5.KNDY4__From_Currency__c = TestFuel.currencyCAD.id;
-                exchangeRate5.KNDY4__To_Currency__c = TestFuel.currencySGD.id;
+                exchangeRate5.KNDY4__From_Currency__c = TestFuel1.currencyCAD.id;
+                exchangeRate5.KNDY4__To_Currency__c = TestFuel1.currencySGD.id;
                 exchangeRate5.KNDY4__Daily_Monthly__c = 'Daily';
                 exchangeRate5.KNDY4__Multiplier_Exchange_Rate__c = 1.140000;
                 exchangeRate5.KNDY4__rate_start_datetime__c = system.now();
@@ -1649,7 +1649,7 @@ public class TestFuel {
                         KNDY4__MRB_Location__c = location2.Id,
                         KNDY4__Default_WIP_Location__c = location7.Id,
                         KNDY4__Notes__c = 'phantomworkorder',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.Id,
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.Id,
                         KNDY4__Packaging_UOM__c = uomList[8].Id
                 );
                 insert phantomWorkOrder;
@@ -1835,7 +1835,7 @@ public class TestFuel {
                 pricebook.name = this.company.Name +  ' Orange Pricebook';
                 pricebook.KNDY4__company__c = this.company.id;
                 pricebook.KNDY4__Primary_Key__c = 'NATBOOK';
-                pricebook.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                pricebook.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 insert pricebook;
                 this.pricebook = pricebook;
 
@@ -1882,7 +1882,7 @@ public class TestFuel {
                 customerParent.KNDY4__Customer_Identifier__c = 'CPTEST123';
                 customerParent.KNDY4__Record_Type_Name__c = 'Corporate_Parent';
                 customerParent.KNDY4__Status__c = 'Approved';
-                customerParent.KNDY4__Currency__c = TestFuel.currencyUSD.ID;
+                customerParent.KNDY4__Currency__c = TestFuel1.currencyUSD.ID;
                 customerParent.KNDY4__Customer_Street__c = '303 Twin Dolphin Drive, Suite 500';
                 customerParent.KNDY4__Customer_City__c = 'Redwood City';
                 customerParent.KNDY4__Customer_State__c = 'CA';
@@ -1912,7 +1912,7 @@ public class TestFuel {
                 customerBillTo.KNDY4__Top_Parent_Customer__c = this.customerParent.id;
                 customerBillTo.KNDY4__Customer_Identifier__c = 'BDTEST123';
                 customerBillTo.KNDY4__Status__c = 'Approved';
-                customerBillTo.KNDY4__Currency__c = TestFuel.currencyUSD.ID;
+                customerBillTo.KNDY4__Currency__c = TestFuel1.currencyUSD.ID;
                 customerBillTo.KNDY4__Customer_Street__c = '303 Twin Dolphin Drive, Suite 500';
                 customerBillTo.KNDY4__Customer_City__c = 'Redwood City';
                 customerBillTo.KNDY4__Customer_State__c = 'CA';
@@ -1943,7 +1943,7 @@ public class TestFuel {
                 customerSoldTo.KNDY4__pricebook__c = this.pricebook.id;
                 customerSoldTo.KNDY4__Top_Parent_Customer__c = this.customerParent.id;
                 customerSoldTo.KNDY4__Status__c = 'Approved';
-                customerSoldTo.KNDY4__Currency__c = TestFuel.currencyUSD.ID;
+                customerSoldTo.KNDY4__Currency__c = TestFuel1.currencyUSD.ID;
                 customerSoldTo.KNDY4__Customer_Street__c = '303 Twin Dolphin Drive, Suite 500';
                 customerSoldTo.KNDY4__Customer_City__c = 'Redwood City';
                 customerSoldTo.KNDY4__Customer_State__c = 'CA';
@@ -2535,7 +2535,7 @@ public class TestFuel {
                         KNDY4__Company__c = company.Id,
                         KNDY4__Active__c = true,
                         //KNDY4__Bank_Account_Number_2__c = '12345',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.id
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.id
                 );
                 insert bankAccount;
                 company.KNDY4__Credit_Card_Bank_Account__c = bankAccount.Id;
@@ -2679,7 +2679,7 @@ public class TestFuel {
                 salesOrder = newSalesOrder();
                 salesOrder.KNDY4__Ship_to__c = customerShipTo.Id;
                 salesOrder.KNDY4__Bill_To__c = customerBillTo.Id;
-                salesOrder.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                salesOrder.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 salesOrder.KNDY4__Original_Sales_Order__c = 'so123';
                 insert salesOrder;
                 insert salesOrderLines;
@@ -2738,7 +2738,7 @@ public class TestFuel {
             if ( salesOrder1 == null  ) {
                 salesOrder1 = new KNDY4__Sales_Order__c();
                 salesOrder1.KNDY4__Customer__c=customerSoldTo.id;
-                salesOrder1.KNDY4__Currency__c = TestFuel.currencyUSD.id ;
+                salesOrder1.KNDY4__Currency__c = TestFuel1.currencyUSD.id ;
                 salesOrder1.KNDY4__Status__c='Open';
                 salesOrder1.KNDY4__Type__c = 'Standard';
                 salesOrder1.KNDY4__Payment_Term__c = terms.id;
@@ -2798,7 +2798,7 @@ public class TestFuel {
             if ( salesOrder2 == null  ) {
                 salesOrder2 = new KNDY4__Sales_Order__c();
                 salesOrder2.KNDY4__Customer__c = customerSoldTo.id;
-                salesOrder2.KNDY4__Currency__c = TestFuel.currencyUSD.id ;
+                salesOrder2.KNDY4__Currency__c = TestFuel1.currencyUSD.id ;
                 salesOrder2.KNDY4__Status__c='Open';
                 salesOrder2.KNDY4__Type__c = 'Special';
                 salesOrder2.KNDY4__Payment_Term__c = terms.id;
@@ -2859,7 +2859,7 @@ public class TestFuel {
             if ( salesOrder3 == null  ) {
                 salesOrder3 = new KNDY4__Sales_Order__c();
                 salesOrder3.KNDY4__Customer__c = customerSoldTo.id;
-                salesOrder3.KNDY4__Currency__c = TestFuel.currencyUSD.id ;
+                salesOrder3.KNDY4__Currency__c = TestFuel1.currencyUSD.id ;
                 salesOrder3.KNDY4__Status__c='Open';
                 salesOrder3.KNDY4__Type__c = 'Adjustment';
                 salesOrder3.KNDY4__Payment_Term__c = terms.id;
@@ -5375,7 +5375,7 @@ public class TestFuel {
         set;
     }
 
-    public TestFuel() {}
+    public TestFuel1() {}
 
     public KNDY4__Means_of_Transport__c newMeansOfTransport(String code, String modeOfTransport) {
         KNDY4__Means_of_Transport__c mot = new KNDY4__Means_of_Transport__c();
@@ -5419,7 +5419,7 @@ public class TestFuel {
         cst.recordTypeId = this.CustomerRecordTypes.get('Ship_To');
         cst.KNDY4__Company__c = this.company.id;
         cst.KNDY4__Payment_Term__c = this.terms.ID;
-        cst.KNDY4__Currency__c = TestFuel.currencyUSD.ID;
+        cst.KNDY4__Currency__c = TestFuel1.currencyUSD.ID;
         //cst.KNDY4__Address__c = this.account.ID;
         cst.KNDY4__Credit_Limit__c = 100000.0;
         cst.KNDY4__Parent_Customer__c = this.customerSoldTo.id;
@@ -5444,7 +5444,7 @@ public class TestFuel {
         cst.recordTypeId = this.CustomerRecordTypes.get('Site');
         cst.KNDY4__Company__c = this.company.id;
         cst.KNDY4__Payment_Term__c = this.terms.ID;
-        cst.KNDY4__Currency__c = TestFuel.currencyUSD.ID;
+        cst.KNDY4__Currency__c = TestFuel1.currencyUSD.ID;
         //cst.KNDY4__Address__c = this.account.ID;
         cst.KNDY4__Credit_Limit__c = 100000.0;
         cst.KNDY4__Parent_Customer__c = this.customerShipTo.id;
@@ -5478,7 +5478,7 @@ public class TestFuel {
                 Name = this.company.Name +  ' Orange Pricebook',
                 KNDY4__Company__c = this.company.Id,
                 KNDY4__Primary_Key__c = 'NATBOOK',
-                KNDY4__Currency__c = TestFuel.currencyUSD.ID
+                KNDY4__Currency__c = TestFuel1.currencyUSD.ID
         );
         return pricebook;
     }
@@ -5491,7 +5491,7 @@ public class TestFuel {
                 KNDY4__Date_Created__c = system.today(),
                 KNDY4__Status__c = 'Draft',
                 KNDY4__Type__c = 'Advanced Shipment Notice',
-                KNDY4__Currency__c = TestFuel.currencyUSD.id,
+                KNDY4__Currency__c = TestFuel1.currencyUSD.id,
                 KNDY4__Transaction_Date__C = system.now()
         );
         return rd;
@@ -5561,7 +5561,7 @@ public class TestFuel {
                         KNDY4__Payment_Term__c = terms.id,
                         KNDY4__Ship_to_Facility__c = facility.Id,
                         KNDY4__Transportation_Mode__c = 'RAIL',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.id
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.id
                 );
                 insert contractAM;
             }
@@ -5613,7 +5613,7 @@ public class TestFuel {
                         KNDY4__Acknowledge_Via__c = 'Email',
                         KNDY4__Status__c = 'Open',
                         KNDY4__Memo__c = 'purchaseOrder',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.id
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.id
                 );
                 insert purchaseOrder;
 
@@ -5672,7 +5672,7 @@ public class TestFuel {
                         KNDY4__fob_term__c = fobTerm.id,
                         KNDY4__Status__c = 'Open',
                         KNDY4__Memo__c = 'purchaseOrder',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.id
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.id
                 );
                 insert purchaseOrder1;
 
@@ -5727,7 +5727,7 @@ public class TestFuel {
                         KNDY4__fob_term__c = fobTerm.id,
                         KNDY4__Status__c = 'Open',
                         KNDY4__Memo__c = 'purchaseOrder2',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.id
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.id
                 );
                 insert purchaseOrder2;
 
@@ -5796,7 +5796,7 @@ public class TestFuel {
                         KNDY4__fob_term__c = fobTerm.id,
                         KNDY4__Status__c = 'Open',
                         KNDY4__Memo__c = 'purchaseOrder',
-                        KNDY4__currency__c = TestFuel.currencyUSD.id
+                        KNDY4__currency__c = TestFuel1.currencyUSD.id
                 );
                 insert purchaseOrder3;
 
@@ -6087,7 +6087,7 @@ public class TestFuel {
                         KNDY4__MRB_Location__c = location2.Id,
                         KNDY4__Default_WIP_Location__c = location7.Id,
                         KNDY4__Notes__c = 'workorder',
-                        KNDY4__Currency__c = TestFuel.currencyUSD.ID,
+                        KNDY4__Currency__c = TestFuel1.currencyUSD.ID,
                         KNDY4__Packaging_UOM__c = uomList[8].Id
                 );
                 insert workOrder;
@@ -6221,7 +6221,7 @@ public class TestFuel {
                 KNDY4__Receiving_Company__c = company.id,
                 KNDY4__Ship_From_Facility__c = facility2.id,
                 KNDY4__Ship_From_Location__c = location2.ID,
-                KNDY4__currency__c = TestFuel.currencyUSD.id,
+                KNDY4__currency__c = TestFuel1.currencyUSD.id,
                 KNDY4__Status__c = 'Draft'
         );
         return transferOrder;
@@ -6415,7 +6415,7 @@ public class TestFuel {
         contract.KNDY4__Payment_Term__c = terms.id;
         contract.KNDY4__Ship_to_Facility__c = facility2.Id;
         contract.KNDY4__Transportation_Mode__c = 'RAIL';
-        contract.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+        contract.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
         return contract;
     }
 
@@ -6538,7 +6538,7 @@ public class TestFuel {
                 agreement.KNDY4__Start_Date__c = system.today();
                 agreement.KNDY4__Status__c = 'Approved';
                 agreement.KNDY4__Customer_Type__c = 'Bill To';
-                agreement.KNDY4__Currency__c = TestFuel.currencyGBP.id;
+                agreement.KNDY4__Currency__c = TestFuel1.currencyGBP.id;
                 agreement.KNDY4__Payment_Terms__c = terms.Id;
                 insert agreement;
                 KNDY4__Agreement_Line__c agl = agreementLine;
@@ -6592,7 +6592,7 @@ public class TestFuel {
 
                 KNDY4__Bank_Transaction__c bankTransaction = new KNDY4__Bank_Transaction__c();
                 bankTransaction.KNDY4__Amount__c = -5000.00;
-                bankTransaction.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                bankTransaction.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 bankTransaction.KNDY4__Bank_Account__c = bankAccount.Id;
                 bankTransaction.KNDY4__Company__c = company.Id;
                 bankTransaction.KNDY4__Transaction_Type__c = 'Credit';
@@ -6607,7 +6607,7 @@ public class TestFuel {
 
                 bankTransaction = new KNDY4__Bank_Transaction__c();
                 bankTransaction.KNDY4__Amount__c = 3000.00;
-                bankTransaction.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                bankTransaction.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 bankTransaction.KNDY4__Bank_Account__c = bankAccount.Id;
                 bankTransaction.KNDY4__Company__c = company.Id;
                 bankTransaction.KNDY4__Transaction_Type__c = 'Debit';
@@ -6622,7 +6622,7 @@ public class TestFuel {
 
                 bankTransaction = new KNDY4__Bank_Transaction__c();
                 bankTransaction.KNDY4__Amount__c = -3000.00;
-                bankTransaction.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                bankTransaction.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 bankTransaction.KNDY4__Bank_Account__c = bankAccount.Id;
                 bankTransaction.KNDY4__Company__c = company.Id;
                 bankTransaction.KNDY4__Transaction_Type__c = 'Credit';
@@ -6653,7 +6653,7 @@ public class TestFuel {
                 customerReceipt.KNDY4__Company__c = company.Id;
                 customerReceipt.KNDY4__Customer__c = customerbillto.Id;
                 customerReceipt.KNDY4__Date_Received__c = system.now();
-                customerReceipt.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                customerReceipt.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 customerReceipt.KNDY4__exception__c = false;
                 customerReceipt.KNDY4__Reference_Number__c = '123s44567mnJ';
                 customerReceipt.KNDY4__Bank_Account_2__c = bankAccount.Id;
@@ -6671,7 +6671,7 @@ public class TestFuel {
                 customerReceipt2.KNDY4__Company__c = company.Id;
                 customerReceipt2.KNDY4__Customer__c = customerbillto.Id;
                 customerReceipt2.KNDY4__Date_Received__c = system.now();
-                customerReceipt2.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                customerReceipt2.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 customerReceipt2.KNDY4__exception__c = false;
                 customerReceipt2.KNDY4__Reference_Number__c = '123s44567mnJ';
                 customerReceipt2.KNDY4__Bank_Account_2__c = bankAccount.Id;
@@ -6762,7 +6762,7 @@ public class TestFuel {
                 journalEntry.KNDY4__Transaction_Type__c = 'Manual';
                 journalEntry.KNDY4__Transaction_Date__c = system.now();
                 journalEntry.KNDY4__Period__c = periodList[0].Id;
-                journalEntry.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                journalEntry.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 lstJournalEntry.add(journalEntry);
 
                 KNDY4__Journal_Entry__c journalEntry2 = new KNDY4__Journal_Entry__c();
@@ -6771,7 +6771,7 @@ public class TestFuel {
                 journalEntry2.KNDY4__type__c = 'Bank Transaction';
                 journalEntry2.KNDY4__Transaction_Type__c = 'Manual';
                 journalEntry.KNDY4__Transaction_Date__c = system.now();
-                journalEntry2.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                journalEntry2.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 journalEntry2.KNDY4__Period__c = periodList[0].Id;
                 lstJournalEntry.add(journalEntry2);
 
@@ -6925,7 +6925,7 @@ public class TestFuel {
                 suppPay1.KNDY4__Finalized__c = true;
                 suppPay1.KNDY4__finalized_date__c = system.now();
                 suppPay1.KNDY4__Supplier__c = supplier.Id;
-                suppPay1.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                suppPay1.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 suppPay1.KNDY4__historical__c = false;
                 //KNDY-17923 - deperecated 'KNDY4__Check_Number__c'
                 //suppPay1.KNDY4__Check_Number__c = 8987;
@@ -6942,7 +6942,7 @@ public class TestFuel {
                 suppPay2.KNDY4__Finalized__c = true;
                 suppPay2.KNDY4__finalized_date__c = system.now();
                 suppPay2.KNDY4__Supplier__c = supplier.Id;
-                suppPay2.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                suppPay2.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 //KNDY-17923 - deperecated 'KNDY4__Check_Number__c'
                 //suppPay2.KNDY4__Check_Number__c = 8987;
                 suppPay2.KNDY4__Reference__c = '8987';
@@ -6989,7 +6989,7 @@ public class TestFuel {
                 intercompanyInvestmentInvoice = new KNDY4__Invoice__c();
                 intercompanyInvestmentInvoice.KNDY4__From_Company__c = altCompany.Id;
                 intercompanyInvestmentInvoice.KNDY4__To_Company__c = company.Id;
-                intercompanyInvestmentInvoice.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                intercompanyInvestmentInvoice.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 intercompanyInvestmentInvoice.KNDY4__Transaction_Date__c = system.now();
                 intercompanyInvestmentInvoice.KNDY4__Type__c = 'Intercompany Investment';
                 intercompanyInvestmentInvoice.KNDY4__Transaction_Type__c = 'Intercompany Investment';
@@ -7017,7 +7017,7 @@ public class TestFuel {
                 intercompanyPayment = new KNDY4__Payment__c();
                 intercompanyPayment.KNDY4__From_Company__c = company.Id;
                 intercompanyPayment.KNDY4__To_Company__c = altCompany.Id;
-                intercompanyPayment.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                intercompanyPayment.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 intercompanyPayment.KNDY4__Transaction_Date__c = system.now();
                 intercompanyPayment.KNDY4__Type__c = 'Intercompany Payment';
                 intercompanyPayment.KNDY4__Transaction_Type__c = 'Intercompany Payment';
@@ -7052,7 +7052,7 @@ public class TestFuel {
                 intercompanyPayment1 = new KNDY4__Payment__c();
                 intercompanyPayment1.KNDY4__From_Company__c = company.Id;
                 intercompanyPayment1.KNDY4__To_Company__c = altCompany.Id;
-                intercompanyPayment1.KNDY4__Currency__c = TestFuel.currencyUSD.id;
+                intercompanyPayment1.KNDY4__Currency__c = TestFuel1.currencyUSD.id;
                 intercompanyPayment1.KNDY4__Transaction_Date__c = system.now();
                 intercompanyPayment1.KNDY4__Type__c = 'Intercompany Payment';
                 intercompanyPayment1.KNDY4__Transaction_Type__c = 'Intercompany Payment';

@@ -8,7 +8,7 @@ public with sharing class KCQTest {
     }
 
     private static void createPOITs(){
-        TestFuel data = new TestFuel();
+        TestFuel1 data = new TestFuel1();
         KNDY4__Inventory_Transaction__c it = new KNDY4__Inventory_Transaction__c();
 
         // PO and Po Line
@@ -106,7 +106,7 @@ public with sharing class KCQTest {
     }
 
     private static testMethod void testWorkOrders(){
-        TestFuel f = new TestFuel();
+        TestFuel1 f = new TestFuel1();
         System.assert(f.assembly2 != null && f.workOrder != null && f.phantomWorkOrder != null);
         System.assert(f.smrsList != null && f.stockMovementRuleList != null && f.periodList != null);
         system.assert(f.remitToSupplier !=null && f.supplier !=null && f.wcResources !=null);
@@ -115,7 +115,7 @@ public with sharing class KCQTest {
 
         KNDY4__Inventory_Transaction__c it = new KNDY4__Inventory_Transaction__c();
 
-        TestFuel data =f;
+        TestFuel1 data =f;
 
         //Item and SKID
         KNDY4__Item__c Item = data.itemList[5];
@@ -225,7 +225,7 @@ public with sharing class KCQTest {
     }
 
     private static void createCQData(){
-        TestFuel f = new TestFuel();
+        TestFuel1 f = new TestFuel1();
 
         compliancequest__SQX_Part_Family__c pfam = new compliancequest__SQX_Part_Family__c(name = 'familiyt-wo');
         insert pfam;
