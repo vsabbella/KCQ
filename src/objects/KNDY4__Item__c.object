@@ -12,13 +12,13 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>CQ_Part__c</fullName>
+        <fullName>KCQ_Part__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <description>Compliance Quest's replica of Kenandy's Item or viceversa</description>
         <externalId>false</externalId>
         <label>CQ Part</label>
         <referenceTo>compliancequest__SQX_Part__c</referenceTo>
-        <relationshipName>KNDYItems</relationshipName>
+        <relationshipLabel>Items (CQ Part)</relationshipLabel>
+        <relationshipName>Items</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
