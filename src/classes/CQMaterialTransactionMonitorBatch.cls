@@ -7,7 +7,8 @@ global with sharing class CQMaterialTransactionMonitorBatch implements Database.
            Database.executeBatch(this, 1);
     }
     global Database.QueryLocator start(Database.BatchableContext bc) {
-        return Database.getQueryLocator('select id,name,compliancequest__Transaction_Code__c,compliancequest__Lot_Number__c,compliancequest__Status__c  from compliancequest__SQX_Material_Transaction__c where (compliancequest__Transaction_Code__c =\'INSPECTION_PASS\'  or compliancequest__Transaction_Code__c = \'INSPECTION_FAIL\') and compliancequest__Status__c = \'Pending\' ');
+        List<String> TransactionCodes = new List<String>{'INSPECTION_PASS','INSPECTION_FAIL','SCRAP','RTV','USE_AS_IS'};
+        return Database.getQueryLocator('select id,name,compliancequest__PO_WO_Number__c,compliancequest__Transaction_Code__c,compliancequest__Lot_Number__c,compliancequest__Status__c  from compliancequest__SQX_Material_Transaction__c where (compliancequest__Transaction_Code__c IN :TransactionCodes) and compliancequest__Status__c = \'Pending\' ');
     }
     global void execute(Database.BatchableContext bc, List<SObject> Scope) {
         CQMaterialTransactionBatchHandler.processCQMaterialTransactions(Scope);

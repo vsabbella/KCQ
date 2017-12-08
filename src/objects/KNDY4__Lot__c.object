@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>KNDY4__HelpLot</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Lot information for an Item that is Lot tracked. The Lot contains the Lot attributes and is unique for the Item and Supplier.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>KNDY4__Lot_Hold_Reason__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates the reason that this Lot is on Hold. Lots on Hold are non-nettable and are not available for fulfillment, WIP, etc. Reason code indicates why on hold.</description>
+        <externalId>false</externalId>
+        <label>Lot Hold Reason</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
+                </value>
+                <value>
+                    <fullName>INSPECTION_FAIL</fullName>
+                    <default>false</default>
+                    <label>INSPECTION_FAIL</label>
+                </value>
+                <value>
+                    <fullName>RTV</fullName>
+                    <default>false</default>
+                    <label>RTV</label>
+                </value>
+                <value>
+                    <fullName>SCRAP</fullName>
+                    <default>false</default>
+                    <label>SCRAP</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Lot</label>
+    <nameField>
+        <label>Lot</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Lots</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
