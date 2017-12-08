@@ -23,7 +23,8 @@ public with sharing class CQMaterialTransactionBatchHandler {
                 LotNumbers.add((String)SObj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c));
 
             }
-            else If(CQMATERIALTRANSACTION_TRANSCODE_INSPECTION_FAIL.equals(SobjTransCode)){
+            else if(CQMATERIALTRANSACTION_TRANSCODE_INSPECTION_FAIL.equals(SobjTransCode)){
+                //system.assert(false);
                 //MTSobjectList.add(Sobj);
             }
             else if(MATERIAL_TRANSACTION_RTV.equals(SobjTransCode)){
@@ -34,7 +35,9 @@ public with sharing class CQMaterialTransactionBatchHandler {
                 //MTSobjectList.add(Sobj);
             }
             else if(MATERIAL_TRANSACTION_USEASIS.equals(SobjTransCode)){
-                MTSobjectList.add(Sobj);
+                //MTSobjectList.add(Sobj);
+                PO_WO_Numbers.add((String)Sobj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c));
+                LotNumbers.add((String)SObj.get(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Lot_Number__c));
             }
 
             releaseLots(new List<String>(LotNumbers), new List<String>(PO_WO_Numbers));
@@ -58,7 +61,7 @@ public with sharing class CQMaterialTransactionBatchHandler {
             ItemIds.add(wo.KNDY4__Item__c);
         }
 
-        for(List<KNDY4__Lot__c> lotList:[select id,name,KNDY4__Lot_Hold__c from KNDY4__Lot__c]){
+        for(List<KNDY4__Lot__c> lotList:[select id,name,KNDY4__Lot_Hold__c from KNDY4__Lot__c where name in: (LotNames) and KNDY4__Item__c in:(ItemIds)]){
             for(KNDY4__Lot__c lot: lotList){
                 lot.put(Schema.KNDY4__Lot__c.KNDY4__Lot_Hold__c, False);
             }
