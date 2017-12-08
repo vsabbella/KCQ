@@ -39,7 +39,7 @@
     </types>
     <types>
       <members>KNDY4__Item__c.Inspection_Required__c</members>
-      <members>KNDY4__Item__c.CQ_Part__c</members>
+      <members>KNDY4__Item__c.KCQ_Part__c</members>
 
       <name>CustomField</name>
     </types>

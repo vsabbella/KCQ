@@ -11,7 +11,7 @@
         <members>SchemaUtil1</members>
         <members>DML1</members>
         <members>CSVParser1</members>
-        <members>TestFuel</members>
+        <members>TestFuel1</members>
         <name>ApexClass</name>
     </types>
     <!--<types>

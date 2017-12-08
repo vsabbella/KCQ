@@ -115,7 +115,7 @@ public with sharing class InventoryTransactionTgrHandler {
             String POWONumber = (ar.get('woNumber') != null) ? (String) ar.get('woNumber') : (String)ar.get('PONumber');
             CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__PO_WO_Number__c, POWONumber);
             Id partReference = ar.get('CQPart') != null ? (Id) ar.get('CQPart') : null;
-            CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, partReference);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+            CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, partReference);//KNDY4__Item__r.KCQ_Part__c//'a1P1I000000desi'
             Decimal quantity = ar.get('qty')!=null?(Decimal) ar.get('qty'):-1;
             CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Quantity__c, quantity);
             String LotNumber = ar.get('LotNumber') != null ? (String) ar.get('LotNumber') : 'No Lot Number';
@@ -150,9 +150,9 @@ public with sharing class InventoryTransactionTgrHandler {
         final String CQMT_STATUS_PENDING = 'Pending';
         KCQUtils1 KCQUtilObj = new KCQUtils1();
         Sobject CQMaterialTransactionSObj = KCQUtilObj.getCQMaterialTransactionInstance();
-        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITWIP.KNDY4__Item__r.CQ_Part__c);//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+        //CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__SQX_Part_Number__c, ITWIP.KNDY4__Item__r.KCQ_Part__c);//KNDY4__Item__r.KCQ_Part__c//'a1P1I000000desi'
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Rev__c, 'a1P1I000000desi');
-        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Number__c, 'Part Number');//KNDY4__Item__r.CQ_Part__c//'a1P1I000000desi'
+        CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Part_Number__c, 'Part Number');//KNDY4__Item__r.KCQ_Part__c//'a1P1I000000desi'
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Transaction_Code__c, CQMT_TRANSCODE_INCOMERECEIPT);
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Status__c, CQMT_STATUS_PENDING);
         CQMaterialTransactionSObj.put(Schema.compliancequest__SQX_Material_Transaction__c.compliancequest__Inspection_Required__c, true);

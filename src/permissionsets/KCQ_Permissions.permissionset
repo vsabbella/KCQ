@@ -13,7 +13,7 @@
 
     <fieldPermissions>
         <editable>true</editable>
-        <field>KNDY4__Item__c.CQ_Part__c</field>
+        <field>KNDY4__Item__c.KCQ_Part__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <classAccesses>

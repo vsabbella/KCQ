@@ -53,7 +53,7 @@ public with sharing class KCQTest {
         );
         insert part;
 
-        Item.CQ_Part__c = part.Id;
+        Item.KCQ_Part__c = part.Id;
         Item.Inspection_Required__c = true;
         update Item;
 
@@ -136,7 +136,7 @@ public with sharing class KCQTest {
         );
         insert part;*/
 
-        //Item.CQ_Part__c = part.Id;
+        //Item.KCQ_Part__c = part.Id;
         Item.Inspection_Required__c = true;
         update Item;
 
